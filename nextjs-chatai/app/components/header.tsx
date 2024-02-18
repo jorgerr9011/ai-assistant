@@ -1,4 +1,7 @@
-import Link from 'next/Link'
+'use client'
+
+import { signIn } from 'next-auth/react'
+import Link from 'next/link'
 
 export default function Header() {
 
@@ -14,7 +17,7 @@ export default function Header() {
             </div>
 
             <div className="flex justify-end sm:items-stretch sm:justify-end">
-                <Link href="/login" className="text-black font-semibold px-4 py-2 transition-all rounded-lg mr-4 hover:bg-pink-400">Iniciar sesión</Link>
+                <button onClick={() => signIn("google")} className="text-black font-semibold px-4 py-2 transition-all rounded-lg mr-4 hover:bg-pink-400">Iniciar sesión</button>
                 <Link href="/signup" className="text-black font-semibold px-4 py-2 transition-all rounded-lg mr-4 hover:bg-pink-400">Registrarse</Link>
             </div>
         </nav>

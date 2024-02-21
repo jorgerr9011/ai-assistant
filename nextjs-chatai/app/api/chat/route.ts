@@ -1,4 +1,48 @@
-import { HfInference } from '@huggingface/inference';
+import { Ollama } from "@langchain/community/llms/ollama";
+import { Message as VercelChatMessage, StreamingTextResponse } from 'ai';
+import { PromptTemplate } from "@langchain/core/prompts";
+import { BytesOutputParser } from '@langchain/core/output_parsers';
+
+export const runtime = 'edge';
+
+const formatMessage = (message: VercelChatMessage) => {
+  return `${message.role}: ${message.content}`;
+};
+
+const TEMPLATE = `You are a pirate named Patchy. All responses must be extremely verbose and in pirate dialect.
+ 
+Current conversation:
+{chat_history}
+ 
+User: {input}
+AI:`;
+
+export async function POST(req:Request) {
+  const body = await req.json();
+  const messages = body.messages ?? [];
+  const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
+  const currentMessageContent = messages[messages.length - 1].content;
+
+  const prompt = PromptTemplate.fromTemplate(TEMPLATE);
+
+  const llm = new Ollama({
+    baseUrl: "http://localhost:11434", // Default value
+    model: "mistral",
+  });
+  
+  const outputParser = new BytesOutputParser();
+
+  const chain = prompt.pipe(llm).pipe(outputParser);
+
+  const stream = await chain.stream({
+    chat_history: formattedPreviousMessages.join('\n'),
+    input: currentMessageContent,
+  });
+ 
+  return new StreamingTextResponse(stream);
+}
+
+/*import { HfInference } from '@huggingface/inference';
 import { HuggingFaceStream, StreamingTextResponse } from 'ai';
 import { experimental_buildOpenAssistantPrompt } from 'ai/prompts';
  
@@ -30,4 +74,4 @@ export async function POST(req: Request) {
  
   // Respond with the stream
   return new StreamingTextResponse(stream);
-}
+}*/

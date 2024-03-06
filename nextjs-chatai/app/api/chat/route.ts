@@ -2,23 +2,78 @@ import { Ollama } from "@langchain/community/llms/ollama";
 import { Message as VercelChatMessage, StreamingTextResponse } from 'ai';
 import { PromptTemplate } from "@langchain/core/prompts";
 import { BytesOutputParser } from '@langchain/core/output_parsers';
+import { JSONLoader } from "langchain/document_loaders/fs/json";
+//import {getResponse} from './embeddings'
 
-export const runtime = 'edge';
+import { OllamaEmbeddings } from "@langchain/community/embeddings/ollama";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
+import { AttributeInfo } from "langchain/schema/query_constructor";
+import { SelfQueryRetriever } from "langchain/retrievers/self_query";
+import { FunctionalTranslator } from "langchain/retrievers/self_query/functional";
+import { Document } from "@langchain/core/documents";
+
+const loader = new JSONLoader("../../confluence_spaces.json");
+
+const docs = [
+  new Document({
+      pageContent: "Si no te funciona el wifi, pruebe a reiniciarlo desde su ordenador",
+      metadata: {title: "Problema con wifi"}
+  }),
+  new Document({
+      pageContent: "Si no te funciona el bluetooth, pruebe a reiniciarlo desde su ordenador",
+      metadata: {title: "Problema con bluetooth"}
+  }),
+]
+
+const attributeInfo: AttributeInfo[] = [
+  {
+      name: "title",
+      description: "The title of the incidence",
+      type: "string",
+  },
+]
+
+export async function getResponse() {
+  const embeddings = new OllamaEmbeddings({
+      model: "mistral", // default value
+      baseUrl: "http://localhost:11434", // default value
+  });
+  const llm = new Ollama({
+      baseUrl: "http://localhost:11434", // Default value
+      model: "mistral",
+  });
+  const documentContents = "Brief summary of a movie";
+  const vectorStore = await MemoryVectorStore.fromDocuments(docs, embeddings);
+  const selfQueryRetriever = await SelfQueryRetriever.fromLLM({
+  llm,
+  vectorStore,
+  documentContents,
+  attributeInfo,
+  structuredQueryTranslator: new FunctionalTranslator(),
+  })
+
+  const query1 = await selfQueryRetriever.getRelevantDocuments(
+      "Which movies are less than 90 minutes?"
+  );
+  console.log(query1)
+}
+
+/*export const runtime = 'edge';
 
 const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-const TEMPLATE = `You are a pirate named Patchy. All responses must be extremely verbose and in pirate dialect.
+const TEMPLATE = `You are a technical support specialist who are specialized in resolve issues, answer queries and provide assistance.
  
 Current conversation:
 {chat_history}
  
 User: {input}
-AI:`;
+AI:`;*/
 
 export async function POST(req:Request) {
-  const body = await req.json();
+  /*const body = await req.json();
   const messages = body.messages ?? [];
   const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
   const currentMessageContent = messages[messages.length - 1].content;
@@ -39,7 +94,10 @@ export async function POST(req:Request) {
     input: currentMessageContent,
   });
  
-  return new StreamingTextResponse(stream);
+  return new StreamingTextResponse(stream);*/
+  await getResponse()
+
+  return new Response()
 }
 
 /*import { HfInference } from '@huggingface/inference';

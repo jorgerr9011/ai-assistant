@@ -6,7 +6,7 @@ import Link from 'next/link'
 export default function Header() {
 
     return (
-        <nav className="flex opacity-75 hover:opacity-100 max-h-12 my-6 items-center justify-between bg-blend-overlay p-1">
+        <nav className="flex opacity-75 rounded max-h-12 py-10 items-center justify-between bg-blue-200 bg-blend-overlay p-1">
             <a href="/" className="px-8">
                 <img className="w-32 h-32" src="/simbolo_udc.svg" alt="udc" />
             </a>

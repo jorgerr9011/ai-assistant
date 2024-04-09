@@ -11,3 +11,6 @@ ollama pull mistral
 ollama serve 
 
 Contra supabase: Campeon901,supabase
+
+# para entrar en la consola de mongo db
+mongosh

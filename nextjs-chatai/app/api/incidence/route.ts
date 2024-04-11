@@ -2,7 +2,7 @@ import {connectDB} from '@/utils/db'
 import Incidence from '@/models/Incidence' 
 import { NextResponse } from 'next/server'
 
-export async function GET(req: Request, { params } : any) {
+export async function GET(req: Request) {
 
     connectDB()
 

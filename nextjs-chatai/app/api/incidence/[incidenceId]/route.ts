@@ -7,7 +7,7 @@ export async function GET(req: Request, { params } : any) {
     try {
         connectDB()
 
-        const incidencia = await Incidence.findById(params.id)
+        const incidencia = await Incidence.findById(params.incidenceId)
 
         if (!incidencia)
             return NextResponse.json({
@@ -28,7 +28,7 @@ export async function GET(req: Request, { params } : any) {
 export async function DELETE(req: Request, {params}: any) {
     
     try {
-        const incidenceDeleted = await Incidence.findByIdAndDelete(params.id)
+        const incidenceDeleted = await Incidence.findByIdAndDelete(params.incidenceId)
 
         if(!incidenceDeleted)
             return NextResponse.json({
@@ -51,7 +51,7 @@ export async function PUT(req: Request, {params}: any) {
     try {
         const body = await req.json()
 
-        const incidenceUpdated = await Incidence.findByIdAndUpdate(params.id, body, {
+        const incidenceUpdated = await Incidence.findByIdAndUpdate(params.incidenceId, body, {
             new: true
         })
 

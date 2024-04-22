@@ -9,7 +9,8 @@ export default function Myincidence() {
     const [incidencia, setIncidencia] = useState({
         name: "",
         description: "",
-        status: "OPEN"
+        status: "OPEN",
+        solution: ""
     });
 
     const router = useRouter()
@@ -45,7 +46,8 @@ export default function Myincidence() {
             setIncidencia({
                 ['name']: incidence.name,
                 ['description']: incidence.description,
-                ['status']: incidence.status
+                ['status']: incidence.status,
+                ['solution']: ""
             })
         };
 

@@ -13,7 +13,7 @@ export default function Header() {
             <div className="flex flex-1 justify-center sm:items-stretch sm:justify-center">
                 <Link href="/" className="text-black font-semibold px-4 py-2 rounded-lg mr-6 bg-pink-400">Home</Link>
                 <Link href="/chat" className="text-black font-semibold px-4 py-2 transition-all rounded-lg hover:bg-pink-400">Chat</Link>
-                <Link href="/dashboard" className="text-black font-semibold px-4 py-2 transition-all rounded-lg hover:bg-pink-400">Dashboard</Link>
+                {/*<Link href="/dashboard" className="text-black font-semibold px-4 py-2 transition-all rounded-lg hover:bg-pink-400">Dashboard</Link>*/}
             </div>
 
             <div className="flex justify-end sm:items-stretch sm:justify-end">

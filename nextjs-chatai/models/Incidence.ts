@@ -1,4 +1,3 @@
-import { timeStamp } from 'console'
 import { Schema, model, models } from 'mongoose'
 
 const incidenceSchema = new Schema({
@@ -15,6 +14,10 @@ const incidenceSchema = new Schema({
     status: {
         type: String,
         enum: ['CLOSED', 'OPEN']
+    },
+    solution: {
+        type: String,
+        trim: true
     }
 }, {
     timestamps: true

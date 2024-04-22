@@ -28,11 +28,11 @@ export async function POST(req:Request) {
       }
     })
 
-    /*const result = await chain.stream({
-      'chat_history': formattedPreviousMessages.join('\n'),
-      'input': currentMessageContent,
-    })*/
-    const result = await chain.stream(currentMessageContent)
+    const result = await chain.stream({
+      chat_history: formattedPreviousMessages.join('\n'),
+      input: currentMessageContent,
+    })
+    //const result = await chain.stream(currentMessageContent)
     //const result = await chain.stream(formattedPreviousMessages.join('\n'), currentMessageContent)
 
     const decoder = new TextDecoder()

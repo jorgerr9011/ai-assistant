@@ -1,11 +1,12 @@
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function Incidencia({ incidencia }: any) {
 
     return (
         <tr>
             <td className="py-2 px-4">
-                <Link href={`/dashboard/incidence/${incidencia._id}`}>
+                <Link href={`/incidence/${incidencia._id}`}>
                     {incidencia.name}
                 </Link>
             </td>

@@ -29,6 +29,9 @@ dependencies:
   ai:
     specifier: ^2.2.35
     version: 2.2.35(react@18.2.0)(solid-js@1.8.14)(svelte@4.2.10)(vue@3.4.19)
+  aws4:
+    specifier: ^1.12.0
+    version: 1.12.0
   bcrypt:
     specifier: ^5.1.1
     version: 5.1.1
@@ -1549,6 +1552,10 @@ packages:
     resolution: {integrity: sha512-j1QzY8iPNPG4o4xmO3ptzpRxTciqD3MgEHtifP/YnJpIo58Xu+ne4BejlbkuaLfXn/nz6HFiw29bLpj2PNMdGg==}
     engines: {node: '>= 0.4'}
     dev: true
+
+  /aws4@1.12.0:
+    resolution: {integrity: sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==}
+    dev: false
 
   /axe-core@4.7.0:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}

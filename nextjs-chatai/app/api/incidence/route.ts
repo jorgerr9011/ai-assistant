@@ -1,14 +1,20 @@
-import {connectDB} from '@/utils/db'
-import Incidence from '@/models/Incidence' 
+import { connectDB } from '@/utils/db'
+import Incidence from '@/models/Incidence'
 import { NextResponse } from 'next/server'
 
 export async function GET(req: Request) {
 
+    //try {
     connectDB()
 
     const incidencias = await Incidence.find()
 
     return NextResponse.json(incidencias)
+    //} catch (error: any) {
+    /*return NextResponse.json(error.message, {
+        status: 400
+    })
+}*/
 }
 
 export async function POST(req: Request) {
@@ -18,18 +24,18 @@ export async function POST(req: Request) {
 
         const incidencia = new Incidence(body)
         const savedIncidence = await incidencia.save()
-        
+
         return NextResponse.json(savedIncidence)
 
-    } catch (error : any){
+    } catch (error: any) {
         return NextResponse.json(error.message, {
             status: 400
         })
     }
 }
 
-export async function PUT(req: Request){
-    
+export async function PUT(req: Request) {
+
     return new Response()
 }
 

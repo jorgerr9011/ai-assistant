@@ -17,6 +17,7 @@
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.6",
     "ai": "^2.2.35",
+    "aws4": "^1.12.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "langchain": "^0.1.20",

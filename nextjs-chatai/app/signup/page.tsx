@@ -2,7 +2,7 @@ export default function Signup(){
 
     return(
         <div className="flex items-center">
-            <div className="container mx-auto">
+            <div className="container mx-auto pe-48">
                 <div className="max-w-md mx-auto my-10">
                     <div className="text-center">
                         <h1 className="my-3 text-3xl font-semibold text-gray-700 dark:text-black-200">Register</h1>

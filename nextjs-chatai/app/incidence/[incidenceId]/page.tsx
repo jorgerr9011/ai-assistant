@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from 'next/navigation'; // Usamos next/router en lugar de next/navigation
-
+import Loading from '@/app/components/loading'
 
 export default function Myincidence() {
 
+    const [isLoading, setIsLoading] = useState(true)
     const [incidencia, setIncidencia] = useState({
         name: "",
         description: "",
@@ -23,7 +24,7 @@ export default function Myincidence() {
                 method: "DELETE",
             });
 
-            router.push('/dashboard/myIncidences')
+            router.push('/myIncidences')
             router.refresh()
         }
     };
@@ -47,32 +48,37 @@ export default function Myincidence() {
                 ['name']: incidence.name,
                 ['description']: incidence.description,
                 ['status']: incidence.status,
-                ['solution']: ""
+                ['solution']: incidence.solution
             })
         };
 
         getIncidencia()
+        setIsLoading(false)
 
     }, []);
 
-    /*if (!incidencia) {
-        return <p>Loading...</p>;
-    }*/               
-
     return (
-        <div className="grid grid-cols-1">
-            <div className="flex flex-col">
-                <a href="#" className="flex flex-col my-24 mx-24 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700">
-                    <div className="flex flex-col justify-between p-4 leading-normal">
-                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{incidencia.name}</h5>
-                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{incidencia.description}</p>
-                        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{incidencia.status}</p>
+        <div className="">
+            {
+                isLoading == true ? (
+                    <Loading />
+                ) : (
+                    <div className="grid grid-cols-1">
+                        <div className="flex flex-col">
+                            <a href="#" className="flex flex-col my-24 mx-24 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                <div className="flex flex-col justify-between p-4 leading-normal">
+                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{incidencia.name}</h5>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{incidencia.description}</p>
+                                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{incidencia.status}</p>
+                                </div>
+                            </a>
+                            <div className="flex-flex-col mx-auto">
+                                <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Eliminar</button>
+                            </div>
+                        </div>
                     </div>
-                </a>
-                <div className="flex-flex-col mx-auto">
-                    <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Eliminar</button>
-                </div>
-            </div>
+                )
+            }
         </div>
     );
 }

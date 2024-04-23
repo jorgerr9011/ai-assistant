@@ -8,7 +8,7 @@ export async function connectDB() {
     if(conn.isConnected) return
         
     const db = await connect('mongodb://localhost/incidenceMongo')
-    console.log(db.connection.db.databaseName)
+    //console.log(db.connection.db.databaseName)
     conn.isConnected = db.connections[0].readyState
 }
 

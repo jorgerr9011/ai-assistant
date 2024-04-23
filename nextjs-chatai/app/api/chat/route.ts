@@ -12,9 +12,10 @@ const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-export async function POST(req:Request) {
+export async function POST(req: Request) {
 
   try {
+    
     const body = await req.json();
     const messages = body.messages ?? [];
 
@@ -30,7 +31,7 @@ export async function POST(req:Request) {
 
     const result = await chain.stream({
       chat_history: formattedPreviousMessages.join('\n'),
-      input: currentMessageContent,
+      question: currentMessageContent,
     })
     //const result = await chain.stream(currentMessageContent)
     //const result = await chain.stream(formattedPreviousMessages.join('\n'), currentMessageContent)
@@ -42,7 +43,7 @@ export async function POST(req:Request) {
 
     const transformStream = new TransformStream({
       transform(chunk, controller) {
-        if(!first_entry_skipped) {
+        if (!first_entry_skipped) {
           first_entry_skipped = true
         } else {
           controller.enqueue(chunk.toString())
@@ -51,7 +52,7 @@ export async function POST(req:Request) {
     })
 
     return new StreamingTextResponse(result.pipeThrough(transformStream))
-  
+
   } catch (error: any) {
     console.log("Hubo un error en la petición")
     return NextResponse.json(error.message, {

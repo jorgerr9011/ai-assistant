@@ -2,8 +2,19 @@
 
 import { ChangeEvent, FormEvent, useState, useEffect } from "react"
 import { useRouter, useParams } from 'next/navigation'
-import alerta from '@/app/components/alerta'
 import Alerta400 from "@/app/components/alerta";
+import Incidence from "@/models/Incidence";
+import { Date, ObjectId } from "mongoose";
+
+interface Incidencia {
+    _id: ObjectId; // Specify the _id property type
+    name: string;
+    description: string;
+    status: string;
+    solution: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
 
 export default function CreateIncidence() {
 
@@ -16,11 +27,29 @@ export default function CreateIncidence() {
     const [newIncidence, setNewIncidence] = useState({
         name: "",
         description: "",
-        status: "OPEN"
+        status: "OPEN",
+        solution: ""
     })
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setNewIncidence({ ...newIncidence, [e.target.name]: e.target.value })
+    }
+
+    const writeSolution = async (data: Incidencia) => {
+
+        try {
+            const id= data._id
+
+            const res2 = await fetch(`/api/solution/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+        } catch (error: any) {
+            console.log("Error message: " + error.message)
+        }
     }
 
     const handleSubmit = async (event: FormEvent) => {
@@ -36,6 +65,11 @@ export default function CreateIncidence() {
             })
 
             if (res.status === 200) {
+
+                const inc: Incidencia = await res.json();
+
+                writeSolution(inc)
+
                 router.push('/myIncidences')
                 router.refresh()
             }
@@ -62,11 +96,11 @@ export default function CreateIncidence() {
 
             {/*<h1 className="font-bold text-3xl">Crea una nueva incidencia</h1>*/}
             <div className="flex flex-col w-2/5 mx-auto my-48 gap-2">
-                <h1 className="font-bold text-3xl my-6">
-                    {
+                {/*<h1 className="font-bold text-3xl my-6">
+                    {/*
                         !params.id ? "Crea una incidencia" : "Edita la incidencia"
-                    }
-                </h1>
+                    */}
+                {/*</h1>*/}
                 <form onSubmit={handleSubmit}>
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Nombre</label>
                     <input onChange={handleChange} name="name" type="text" className="rounded-md flex-grow w-full border border-gray-400 focus:border-red-400" />

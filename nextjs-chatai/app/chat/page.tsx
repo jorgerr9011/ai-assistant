@@ -1,27 +1,10 @@
 'use client';
 
 import { useChat } from 'ai/react';
-//import useLLM from "usellm";
-//import { useState } from 'react';
 
 export default function Chat() {
     const { messages, input, handleInputChange, handleSubmit } = useChat();
-    //const llm = useLLM({ serviceUrl: "http://localhost:8000/create_message" });
-    //const [result, setResult] = useState("");
-    //const { chat, record, stopRecording, transcribe } = llm;
-
-    /*async function handleClick() {
-
-        try {
-            await llm.chat({
-                messages: [{ role: "user", content: "What is a language model?" }],
-                stream: true,
-                onStream: ({ message }) => setResult(message.content),
-            });
-        } catch (Error) {
-            console.error("Something went wrong!", Error);
-        }
-    }*/
+    
 
     return (
         <div className="flex flex-col justify-center items-center mx-auto w-full max-w-2xl py-24">
@@ -51,9 +34,4 @@ export default function Chat() {
         </div>
     );
 }
-{/*
-<div>
-    <button onClick={handleClick}>Send</button>
-    <div style={{ whiteSpace: "pre-wrap" }}>{result}</div>
-</div>
-*/}
+

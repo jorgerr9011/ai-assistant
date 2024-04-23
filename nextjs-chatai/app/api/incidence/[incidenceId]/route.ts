@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server'
 export async function GET(req: Request, { params } : any) {
 
     try {
-        connectDB()
+        await connectDB()
 
         const incidencia = await Incidence.findById(params.incidenceId)
 
@@ -28,6 +28,7 @@ export async function GET(req: Request, { params } : any) {
 export async function DELETE(req: Request, {params}: any) {
     
     try {
+        await connectDB()
         const incidenceDeleted = await Incidence.findByIdAndDelete(params.incidenceId)
 
         if(!incidenceDeleted)
@@ -49,6 +50,8 @@ export async function DELETE(req: Request, {params}: any) {
 export async function PUT(req: Request, {params}: any) {
     
     try {
+        await connectDB()
+        
         const body = await req.json()
 
         const incidenceUpdated = await Incidence.findByIdAndUpdate(params.incidenceId, body, {

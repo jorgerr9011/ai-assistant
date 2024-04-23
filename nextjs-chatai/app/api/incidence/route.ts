@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server'
 export async function GET(req: Request) {
 
     //try {
-    connectDB()
+    await connectDB()
 
     const incidencias = await Incidence.find()
 
@@ -25,6 +25,7 @@ export async function POST(req: Request) {
         const incidencia = new Incidence(body)
         const savedIncidence = await incidencia.save()
 
+        console.log(savedIncidence)
         return NextResponse.json(savedIncidence)
 
     } catch (error: any) {
@@ -32,14 +33,4 @@ export async function POST(req: Request) {
             status: 400
         })
     }
-}
-
-export async function PUT(req: Request) {
-
-    return new Response()
-}
-
-export async function DELETE(req: Request) {
-
-    return new Response()
 }

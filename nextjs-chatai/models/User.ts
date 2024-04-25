@@ -20,6 +20,17 @@ const userSchema = new Schema({
         required: [true, "El username es requerido"],
         minLength: [3, "El usuario debe tener al menos 3 carácteres"],
         maxLength: [50, "El usuario puede tener como mucho 50 carácteres"]
+    },
+    completed_incidences_count: {
+        type: Number,
+        default: 0
+    },
+    open_incidences_count: {
+        type: Number,
+        default: 0
+    },
+    role: {
+        type: String
     }
 })
 

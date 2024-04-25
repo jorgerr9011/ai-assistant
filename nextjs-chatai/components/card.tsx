@@ -1,4 +1,4 @@
-export default function Card({ title, text }: {title: string, text: string}) {
+export default function Card({ title, text }: { title: string, text: string }) {
 
     return (
         <a href="#" className="flex flex-col my-24 mx-24 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700">

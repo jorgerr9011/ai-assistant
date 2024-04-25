@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from 'next/navigation'; // Usamos next/router en lugar de next/navigation
-import Loading from '@/app/components/loading'
+import Loading from '@/components/loading'
 
 export default function Myincidence() {
 
@@ -10,8 +10,9 @@ export default function Myincidence() {
     const [incidencia, setIncidencia] = useState({
         name: "",
         description: "",
-        status: "OPEN",
-        solution: ""
+        status: "",
+        solution: "",
+        email: ""
     });
 
     const router = useRouter()
@@ -43,12 +44,13 @@ export default function Myincidence() {
 
             const incidence = await res.json();
 
-            console.log(incidence)
+            //console.log(incidence)
             setIncidencia({
                 ['name']: incidence.name,
                 ['description']: incidence.description,
                 ['status']: incidence.status,
-                ['solution']: incidence.solution
+                ['solution']: incidence.solution,
+                ['email']: incidence.email
             })
         };
 

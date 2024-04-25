@@ -2,9 +2,11 @@
 
 import { ChangeEvent, FormEvent, useState, useEffect } from "react"
 import { useRouter, useParams } from 'next/navigation'
-import Alerta400 from "@/app/components/alerta";
+import Alerta400 from "@/components/alerta";
 import Incidence from "@/models/Incidence";
 import { Date, ObjectId } from "mongoose";
+import { useSession } from "next-auth/react";
+import User from "@/models/User";
 
 interface Incidencia {
     _id: ObjectId; // Specify the _id property type
@@ -12,23 +14,53 @@ interface Incidencia {
     description: string;
     status: string;
     solution: string;
+    email: string;
     createdAt: Date;
     updatedAt: Date;
 }
 
+interface Usuario {
+    _id: ObjectId; // Specify the _id property type
+    email: string;
+    password: string;
+    username: string;
+    open_incidences_count: number;
+    completed_incidences_count: number;
+}
+
 export default function CreateIncidence() {
+
+    const router = useRouter()
 
     // useState para la alerta
     const [error400, setError400] = useState(false);
 
-    const router = useRouter()
-    const params = useParams()
+    // Tiene que estar a true en required porque necesitamos
+    // que el usuario esté autenticado para poder crear una 
+    // nueva incidencia, y esta tenga asociada el email del 
+    // user que la creo
+    const { data: session, status } = useSession({
+        required: true,
+        onUnauthenticated() {
+            router.push("/");
+        },
+    });
 
+    const getEmail = () => {
+        if (session && status === "authenticated") {
+            const user = session?.user as Usuario
+            const userEmail = user?.email
+            return userEmail
+        }
+    }
+
+    const [usuario, setUsuario] = useState<Usuario>(session?.user as Usuario)
     const [newIncidence, setNewIncidence] = useState({
         name: "",
         description: "",
         status: "OPEN",
-        solution: ""
+        solution: "",
+        email: getEmail()
     })
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -37,8 +69,8 @@ export default function CreateIncidence() {
 
     const writeSolution = async (data: Incidencia) => {
 
+        const id = data._id
         try {
-            const id= data._id
 
             const res2 = await fetch(`/api/solution/${id}`, {
                 method: 'PUT',
@@ -53,8 +85,9 @@ export default function CreateIncidence() {
     }
 
     const handleSubmit = async (event: FormEvent) => {
+
+        event.preventDefault()
         try {
-            event.preventDefault()
 
             const res = await fetch('/api/incidence', {
                 method: 'POST',
@@ -67,8 +100,21 @@ export default function CreateIncidence() {
             if (res.status === 200) {
 
                 const inc: Incidencia = await res.json();
+                const userEmail = newIncidence.email
+                let openIncidences = ++usuario.open_incidences_count
+                openIncidences++
 
-                writeSolution(inc)
+                setUsuario({ ...usuario, open_incidences_count: openIncidences })
+
+                const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${userEmail}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(usuario),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                //writeSolution(inc)
 
                 router.push('/myIncidences')
                 router.refresh()
@@ -86,21 +132,12 @@ export default function CreateIncidence() {
         }
     }
 
-    useEffect(() => {
-        console.log(params)
-    }, [])
-
     return (
-        <div className="grid grid-cols-1">
+        <div className="grid grid-cols-1 pe-48">
+
             {error400 && <Alerta400 />}
 
-            {/*<h1 className="font-bold text-3xl">Crea una nueva incidencia</h1>*/}
             <div className="flex flex-col w-2/5 mx-auto my-48 gap-2">
-                {/*<h1 className="font-bold text-3xl my-6">
-                    {/*
-                        !params.id ? "Crea una incidencia" : "Edita la incidencia"
-                    */}
-                {/*</h1>*/}
                 <form onSubmit={handleSubmit}>
                     <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Nombre</label>
                     <input onChange={handleChange} name="name" type="text" className="rounded-md flex-grow w-full border border-gray-400 focus:border-red-400" />

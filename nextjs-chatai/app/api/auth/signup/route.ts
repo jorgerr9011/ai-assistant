@@ -16,9 +16,12 @@ export async function POST(req: Request) {
     try {
         await connectDB()
         
-        const {username, email, password} = await req.json()
+        const {email, password, username} = await req.json()
 
         if (!password || password < 6) {
+
+            console.log("La contraseña debe tener al menos 6 carácteres")
+
             return NextResponse.json({
                 message: "La contraseña debe tener al menos 6 carácteres"
             }, {
@@ -29,6 +32,8 @@ export async function POST(req: Request) {
         const userFound = await User.findOne({email})  
         
         if (userFound) {
+            console.log("Email alredy exists")
+
             return NextResponse.json({
                 message: "Email alredy exists"
             }, {
@@ -39,9 +44,9 @@ export async function POST(req: Request) {
         const hashed_pw = await bcrypt.hash(password, 12)
 
         const newUser = new User({
-            email,
-            hashed_pw,
-            username,
+            email: email,
+            password: hashed_pw,
+            username: username,
         })
 
         const savedUser = await newUser.save()
@@ -49,8 +54,25 @@ export async function POST(req: Request) {
         return NextResponse.json(savedUser)
 
     } catch (error: any) {
+
+        console.log(error.message)
+
         return NextResponse.json(error.message, {
             status: 400
         })
+    }
+}
+
+export async function DELETE(req: Request) {
+
+    try {
+
+        await connectDB()
+
+        await User.deleteMany()
+
+        return new NextResponse()
+    } catch (error) {
+        console.log(error)
     }
 }

@@ -1,17 +1,45 @@
 'use client'
 
-import Loading from '@/app/components/loading'
+import Loading from '@/components/loading'
 import Incidence from '@/models/Incidence'
-import Incidencia from '@/app/components/incidence'
-import React, { useState } from 'react'
+import Incidencia from '@/components/incidence'
+import React, { useEffect, useState } from 'react'
 import { fetchIncidences } from './fetchIncidences'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { ObjectId } from 'mongoose'
+import User from '@/models/User'
+
+interface Usuario {
+    _id: ObjectId; // Specify the _id property type
+    email: string;
+    password: string;
+    username: string;
+    open_incidences_count: number;
+    completed_incidences_count: number;
+}
 
 export default function Myincidence() {
 
+    const router = useRouter()
     const { isLoading, listIncidences } = fetchIncidences()
     const [listaFiltrada, setListaFiltrada] = useState(listIncidences)
     const [currentPage, setCurrentPage] = useState(0)
     const [search, setSearch] = useState('')
+
+    const handleDelete = async () => {
+        if (window.confirm("¿Estas seguro de querer borrar esta incidencia?")) {
+            const res = await fetch('/api/incidence', {
+                method: "DELETE",
+            });
+
+            if (res.status === 200) {
+
+                router.push('/')
+                router.refresh()
+            }
+        }
+    }
 
     const nextPage = () => {
         if (search.length != 0 && listaFiltrada.length > currentPage + 5) {
@@ -58,12 +86,13 @@ export default function Myincidence() {
                                 <th className="py-2 px-4 text-left">Descripción</th>
                                 <th className="py-2 px-4 text-left">Estado</th>
                                 <th className="py-2 px-4 text-left">Fecha creación</th>
+                                <th className="py-2 px-4 text-left">OPEN Incidences</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             {filteredIncidences().map((item: any) => (
-                                <Incidencia key={item._id} incidencia={item} />
+                                <Incidencia key={item._id} incidencia={item}/>
                             ))}
                         </tbody>
 
@@ -72,6 +101,9 @@ export default function Myincidence() {
                     <button onClick={previousPage} className="button button-primary rounded-xl m-4 bg-slate-500">Anterior</button>
                     <label> {currentPage} </label>
                     <button onClick={nextPage} className="button button-primary rounded-xl m-4 bg-slate-500">Siguiente</button>
+
+                    <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Eliminar</button>
+
                 </div>
             ) : (
                 <Loading />

@@ -18,7 +18,12 @@ const incidenceSchema = new Schema({
     solution: {
         type: String,
         trim: true
-    }
+    },
+    email: {
+        type: String,
+        ref: 'User', // Reference to the 'User' model
+        required: [true, 'El usuario es requerido']
+    },
 }, {
     timestamps: true
 })

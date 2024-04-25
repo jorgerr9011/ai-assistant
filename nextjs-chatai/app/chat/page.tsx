@@ -5,7 +5,6 @@ import { useChat } from 'ai/react';
 export default function Chat() {
     const { messages, input, handleInputChange, handleSubmit } = useChat();
     
-
     return (
         <div className="flex flex-col justify-center items-center mx-auto w-full max-w-2xl py-24">
 

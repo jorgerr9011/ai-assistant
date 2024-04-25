@@ -8,7 +8,7 @@ export default function Alerta400() {
   };
 
   return (
-    <div className='mx-auto max-h-1'>
+    <div className='mx-auto max-h-1 max-w-6xl'>
       {visible && (
         <div id="alerta-400" className="bg-red-100 border-red-400 border-l-4 p-4 text-red-700 rounded-lg shadow-md" role="alert">
           <h3 className="font-bold text-lg">Error 400: Bad Request</h3>

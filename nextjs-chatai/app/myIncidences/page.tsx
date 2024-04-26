@@ -102,6 +102,7 @@ export default function Myincidence() {
             const user = await resUpdate.json()
             setUsuario(user as Usuario)
         }
+        
         getUser()
         //setUsuario(session?.user as Usuario)
         setLoading(false)

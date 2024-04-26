@@ -3,9 +3,14 @@
 import { useState, useEffect } from "react"
 import { useRouter, useParams } from 'next/navigation'; // Usamos next/router en lugar de next/navigation
 import Loading from '@/components/loading'
+import { useSession } from "next-auth/react";
+import { Usuario } from '@/types/User'
+import { ObjectId } from "mongoose";
 
 export default function Myincidence() {
 
+    const router = useRouter()
+    const params = useParams()
     const [isLoading, setIsLoading] = useState(true)
     const [incidencia, setIncidencia] = useState({
         name: "",
@@ -15,9 +20,27 @@ export default function Myincidence() {
         email: ""
     });
 
-    const router = useRouter()
-    const params = useParams()
+    const { data: session, status } = useSession({
+        required: true,
+        onUnauthenticated() {
+            router.push("/");
+        },
+    });
+    const [usuario, setUsuario] = useState<Usuario>({
+        _id: 0 as unknown as ObjectId, // Specify the _id property type
+        email: "",
+        username: "",
+        open_incidences_count: 0,
+        completed_incidences_count: 0,
+    })
+
     const incidenciaId = params.incidenceId
+
+    const changeOpenIncident = () => {
+        let user = usuario
+        user.open_incidences_count = user.open_incidences_count-1
+        setUsuario(user)
+    } 
 
     const handleDelete = async () => {
         if (window.confirm("¿Estas seguro de querer borrar esta incidencia?")) {
@@ -25,15 +48,39 @@ export default function Myincidence() {
                 method: "DELETE",
             });
 
-            router.push('/myIncidences')
-            router.refresh()
+            if (res.status === 200) {
+
+                changeOpenIncident()
+                const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${usuario.email}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(usuario),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                router.push('/myIncidences')
+                router.refresh()
+            }
         }
     };
 
     useEffect(() => {
 
+        const getUser = async () => {
+
+            const email = session?.user?.email
+            const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${email}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            const user = await resUpdate.json()
+            setUsuario(user as Usuario)
+        }
+
         const getIncidencia = async () => {
-            console.log(incidenciaId)
 
             const res = await fetch(`http://localhost:3000/api/incidence/${incidenciaId}`, {
                 method: "GET",
@@ -43,7 +90,6 @@ export default function Myincidence() {
             });
 
             const incidence = await res.json();
-
             setIncidencia({
                 ['name']: incidence.name,
                 ['description']: incidence.description,
@@ -52,7 +98,8 @@ export default function Myincidence() {
                 ['email']: incidence.email
             })
         };
-
+        
+        getUser()
         getIncidencia()
         setIsLoading(false)
 

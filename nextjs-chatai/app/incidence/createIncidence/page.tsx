@@ -7,6 +7,7 @@ import Incidence from "@/models/Incidence";
 import { Date, ObjectId } from "mongoose";
 import { useSession } from "next-auth/react";
 import User from "@/models/User";
+import Loading from "@/components/loading";
 
 interface Incidencia {
     _id: ObjectId; // Specify the _id property type
@@ -19,10 +20,10 @@ interface Incidencia {
     updatedAt: Date;
 }
 
+// un id tiene la siguiente pinta: "662a210392d0ccd9dd5eb5f8"
 interface Usuario {
     _id: ObjectId; // Specify the _id property type
     email: string;
-    password: string;
     username: string;
     open_incidences_count: number;
     completed_incidences_count: number;
@@ -43,35 +44,43 @@ export default function CreateIncidence() {
         required: true,
         onUnauthenticated() {
             router.push("/");
+            router.refresh();
         },
     });
 
-    const getEmail = () => {
-        if (session && status === "authenticated") {
-            const user = session?.user as Usuario
-            const userEmail = user?.email
-            return userEmail
-        }
-    }
-
-    const [usuario, setUsuario] = useState<Usuario>(session?.user as Usuario)
+    const [isLoading, setIsLoading] = useState(true)
+    const [usuario, setUsuario] = useState<Usuario>({
+        _id: 0 as unknown as ObjectId, // Specify the _id property type
+        email: "",
+        username: "",
+        open_incidences_count: 0,
+        completed_incidences_count: 0,
+    })
     const [newIncidence, setNewIncidence] = useState({
         name: "",
         description: "",
         status: "OPEN",
         solution: "",
-        email: getEmail()
+        email: ""
     })
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setNewIncidence({ ...newIncidence, [e.target.name]: e.target.value })
     }
 
+    const changeOpenIncident = () => {
+        console.log(usuario)
+        let user = usuario
+        user.open_incidences_count = ++user.open_incidences_count
+        
+        setUsuario(user)
+        console.log(usuario)
+    } 
+
     const writeSolution = async (data: Incidencia) => {
 
         const id = data._id
         try {
-
             const res2 = await fetch(`/api/solution/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify(data),
@@ -86,9 +95,12 @@ export default function CreateIncidence() {
 
     const handleSubmit = async (event: FormEvent) => {
 
-        event.preventDefault()
-        try {
+        const userEmail = usuario?.email
+        changeOpenIncident()
 
+        event.preventDefault()
+
+        try {
             const res = await fetch('/api/incidence', {
                 method: 'POST',
                 body: JSON.stringify(newIncidence),
@@ -100,12 +112,8 @@ export default function CreateIncidence() {
             if (res.status === 200) {
 
                 const inc: Incidencia = await res.json();
-                const userEmail = newIncidence.email
-                let openIncidences = ++usuario.open_incidences_count
-                openIncidences++
 
-                setUsuario({ ...usuario, open_incidences_count: openIncidences })
-
+                console.log(usuario)
                 const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${userEmail}`, {
                     method: 'PUT',
                     body: JSON.stringify(usuario),
@@ -114,10 +122,15 @@ export default function CreateIncidence() {
                     }
                 })
 
+                const data = await resUpdate.json()
+                console.log(data)
                 //writeSolution(inc)
 
-                router.push('/myIncidences')
-                router.refresh()
+                if (resUpdate.status === 200) {
+
+                    router.push('/myIncidences')
+                    router.refresh()
+                }
             }
 
             if (res.status === 400) {
@@ -132,22 +145,51 @@ export default function CreateIncidence() {
         }
     }
 
+    useEffect(() => {
+
+        const getUser = async () => {
+
+            const email = session?.user?.email
+
+            const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${email}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+
+            const user = await resUpdate.json()
+            setUsuario(user)
+        }
+
+        getUser()
+        //let user = session?.user as Usuario
+        //setUsuario(user)
+        setNewIncidence((newIncidence) => ({ ...newIncidence, email: session?.user?.email as string })) 
+        setIsLoading(false)
+
+    }, [status])
+
     return (
         <div className="grid grid-cols-1 pe-48">
-
-            {error400 && <Alerta400 />}
-
-            <div className="flex flex-col w-2/5 mx-auto my-48 gap-2">
-                <form onSubmit={handleSubmit}>
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Nombre</label>
-                    <input onChange={handleChange} name="name" type="text" className="rounded-md flex-grow w-full border border-gray-400 focus:border-red-400" />
-                    <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Detalles</label>
-                    <textarea onChange={handleChange} name="description" className=" no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" id="message"></textarea>
-                    <div className="flex justify-end">
-                        <button type="submit" className="ml-4 px-4 rounded-black border-black border rounded-md bg-red-400 text-white hover:bg-red-600 transition-all ease-in-out">Send request</button>
+            {isLoading === false ? (
+                <>
+                    {error400 && <Alerta400 />}
+                    <div className="flex flex-col w-2/5 mx-auto my-48 gap-2">
+                        <form onSubmit={handleSubmit}>
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Nombre</label>
+                            <input onChange={handleChange} name="name" type="text" className="rounded-md flex-grow w-full border border-gray-400 focus:border-red-400" />
+                            <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Detalles</label>
+                            <textarea onChange={handleChange} name="description" className=" no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" id="message"></textarea>
+                            <div className="flex justify-end">
+                                <button type="submit" className="ml-4 px-4 rounded-black border-black border rounded-md bg-red-400 text-white hover:bg-red-600 transition-all ease-in-out">Send request</button>
+                            </div>
+                        </form>
                     </div>
-                </form>
-            </div>
+                </>
+            ) : (
+                <Loading />
+            )}
         </div>
     )
 }

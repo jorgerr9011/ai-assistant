@@ -13,7 +13,6 @@ import User from '@/models/User'
 interface Usuario {
     _id: ObjectId; // Specify the _id property type
     email: string;
-    password: string;
     username: string;
     open_incidences_count: number;
     completed_incidences_count: number;
@@ -26,6 +25,26 @@ export default function Myincidence() {
     const [listaFiltrada, setListaFiltrada] = useState(listIncidences)
     const [currentPage, setCurrentPage] = useState(0)
     const [search, setSearch] = useState('')
+    const [loading, setLoading] = useState(true)
+    const { data: session, status } = useSession({
+        required: true,
+        onUnauthenticated() {
+            router.push("/");
+        },
+    });
+    const [usuario, setUsuario] = useState<Usuario>({
+        _id: 0 as unknown as ObjectId, // Specify the _id property type
+        email: "",
+        username: "",
+        open_incidences_count: 0,
+        completed_incidences_count: 0,
+    })
+
+    const changeOpenIncident = () => {
+        let user = usuario
+        user.open_incidences_count = 0
+        setUsuario(user)
+    } 
 
     const handleDelete = async () => {
         if (window.confirm("¿Estas seguro de querer borrar esta incidencia?")) {
@@ -34,7 +53,15 @@ export default function Myincidence() {
             });
 
             if (res.status === 200) {
+                changeOpenIncident()
 
+                const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${usuario.email}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(usuario),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
                 router.push('/')
                 router.refresh()
             }
@@ -61,7 +88,6 @@ export default function Myincidence() {
 
         const filter = listIncidences.filter((inci: typeof Incidence) => inci.name.includes(search))
         setListaFiltrada(filter.slice(currentPage, currentPage + 5))
-
         return listaFiltrada
     }
 
@@ -70,9 +96,29 @@ export default function Myincidence() {
         setSearch(event.target.value)
     }
 
+    useEffect(() => {
+
+        const getUser = async () => {
+
+            const email = session?.user?.email
+            const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${email}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            const user = await resUpdate.json()
+            setUsuario(user as Usuario)
+        }
+        getUser()
+        //setUsuario(session?.user as Usuario)
+        setLoading(false)
+
+    }, [status])
+
     return (
         <div className="grid grid-cols-1">
-            {isLoading == false ? (
+            {isLoading === false && loading === false ? (
                 <div className="container mx-auto">
                     <input
                         type="text"
@@ -86,15 +132,20 @@ export default function Myincidence() {
                                 <th className="py-2 px-4 text-left">Descripción</th>
                                 <th className="py-2 px-4 text-left">Estado</th>
                                 <th className="py-2 px-4 text-left">Fecha creación</th>
-                                <th className="py-2 px-4 text-left">OPEN Incidences</th>
+                                <th className="py-2 px-4 text-left">Open</th>
+                                <th className="py-2 px-4 text-left">Complete</th>
                             </tr>
                         </thead>
 
-                        <tbody>
-                            {filteredIncidences().map((item: any) => (
-                                <Incidencia key={item._id} incidencia={item}/>
-                            ))}
-                        </tbody>
+                        {usuario != undefined ? (
+                            <tbody>
+                                {filteredIncidences().map((item: any) => (
+                                    <Incidencia key={item._id} incidencia={item} user={usuario} />
+                                ))}
+                            </tbody>
+                        ) : (
+                            <></>
+                        )}
 
                     </table>
 

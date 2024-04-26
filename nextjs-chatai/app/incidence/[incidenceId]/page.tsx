@@ -44,7 +44,6 @@ export default function Myincidence() {
 
             const incidence = await res.json();
 
-            //console.log(incidence)
             setIncidencia({
                 ['name']: incidence.name,
                 ['description']: incidence.description,

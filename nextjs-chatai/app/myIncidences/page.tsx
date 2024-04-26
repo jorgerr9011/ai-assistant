@@ -8,15 +8,7 @@ import { fetchIncidences } from './fetchIncidences'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { ObjectId } from 'mongoose'
-import User from '@/models/User'
-
-interface Usuario {
-    _id: ObjectId; // Specify the _id property type
-    email: string;
-    username: string;
-    open_incidences_count: number;
-    completed_incidences_count: number;
-}
+import { Usuario } from '@/types/User'
 
 export default function Myincidence() {
 

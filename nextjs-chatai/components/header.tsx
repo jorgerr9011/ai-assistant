@@ -1,22 +1,15 @@
 'use client'
 
-import { ObjectId } from 'mongoose';
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link'
 import { useState } from 'react';
+import { Usuario } from '@/types/User'
 
 /*
 Si quisiera ejecutar lo mismo que con useSession en el lado
 del servidor, tendría que usar la siguiente función
 import { getServerSession } from 'next-auth';
 */
-
-interface Usuario {
-    _id: ObjectId; // Specify the _id property type
-    email: string;
-    password: string;
-    username: string;
-}
 
 export default function Header() {
 

@@ -1,18 +1,9 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
-import User from '@/models/User'
 import Alerta400 from "@/components/alerta";
 import { signIn } from 'next-auth/react'
-import { ObjectId } from 'mongoose';
 import { useRouter } from 'next/navigation'
-
-interface Usuario {
-    email: string;
-    password: string;
-    username: string;
-    _id: ObjectId; // Specify the _id property type
-}
 
 export default function Login() {
 

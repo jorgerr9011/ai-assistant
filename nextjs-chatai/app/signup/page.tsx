@@ -7,13 +7,6 @@ import { signIn } from 'next-auth/react'
 import { ObjectId } from 'mongoose';
 import { useRouter } from 'next/navigation'
 
-interface Usuario {
-    email: string;
-    password: string;
-    username: string;
-    _id: ObjectId; // Specify the _id property type
-}
-
 export default function Signup() {
 
     const [error400, setError400] = useState(false);
@@ -22,9 +15,7 @@ export default function Signup() {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 
         event.preventDefault()
-
         const formData = new FormData(event.currentTarget)
-
         const newUser = {
             email: formData.get('email'),
             password: formData.get('password'),
@@ -32,7 +23,6 @@ export default function Signup() {
         }
 
         try {
-
             const res = await fetch('http://localhost:3000/api/auth/signup/', {
                 method: "POST",
                 body: JSON.stringify(newUser),
@@ -41,15 +31,12 @@ export default function Signup() {
                 }
             })
 
-            const data = res.json()
-
             if (res.status === 400) {
                 setError400(true)
                 setTimeout(() => {
                     setError400(false);
                 }, 5000); // Ocultar la alerta después de 5 segundos
             }
-
             // Una vez que estemos registrados, la intención es que se te loggee directamente
             // La siguiente respuesta va a ser de la api de NextAuth autenticando al usuario
             const resNextAuth = await signIn('credentials', {
@@ -57,7 +44,6 @@ export default function Signup() {
                 password: formData.get('password'),
                 redirect: false
             })
-
             // La interrogación es un gran recurso en caso de que queramos indicar
             // que el valor puede llegar o contrariamente, llega un undefined 
             if (resNextAuth?.ok) {

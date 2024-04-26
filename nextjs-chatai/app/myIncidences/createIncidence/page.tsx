@@ -1,33 +1,15 @@
 'use client'
 
 import { ChangeEvent, FormEvent, useState, useEffect } from "react"
-import { useRouter, useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Alerta400 from "@/components/alerta";
-import Incidence from "@/models/Incidence";
-import { Date, ObjectId } from "mongoose";
+import { ObjectId } from "mongoose";
 import { useSession } from "next-auth/react";
-import User from "@/models/User";
 import Loading from "@/components/loading";
-
-interface Incidencia {
-    _id: ObjectId; // Specify the _id property type
-    name: string;
-    description: string;
-    status: string;
-    solution: string;
-    email: string;
-    createdAt: Date;
-    updatedAt: Date;
-}
+import { Incidencia } from '@/types/Incidence'
+import { Usuario } from '@/types/User'
 
 // un id tiene la siguiente pinta: "662a210392d0ccd9dd5eb5f8"
-interface Usuario {
-    _id: ObjectId; // Specify the _id property type
-    email: string;
-    username: string;
-    open_incidences_count: number;
-    completed_incidences_count: number;
-}
 
 export default function CreateIncidence() {
 
@@ -69,12 +51,9 @@ export default function CreateIncidence() {
     }
 
     const changeOpenIncident = () => {
-        console.log(usuario)
         let user = usuario
-        user.open_incidences_count = ++user.open_incidences_count
-        
+        user.open_incidences_count = ++user.open_incidences_count   
         setUsuario(user)
-        console.log(usuario)
     } 
 
     const writeSolution = async (data: Incidencia) => {
@@ -111,9 +90,6 @@ export default function CreateIncidence() {
 
             if (res.status === 200) {
 
-                const inc: Incidencia = await res.json();
-
-                console.log(usuario)
                 const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${userEmail}`, {
                     method: 'PUT',
                     body: JSON.stringify(usuario),
@@ -121,13 +97,9 @@ export default function CreateIncidence() {
                         "Content-Type": "application/json"
                     }
                 })
-
-                const data = await resUpdate.json()
-                console.log(data)
                 //writeSolution(inc)
 
                 if (resUpdate.status === 200) {
-
                     router.push('/myIncidences')
                     router.refresh()
                 }
@@ -150,21 +122,16 @@ export default function CreateIncidence() {
         const getUser = async () => {
 
             const email = session?.user?.email
-
             const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${email}`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
-
             const user = await resUpdate.json()
             setUsuario(user)
         }
-
         getUser()
-        //let user = session?.user as Usuario
-        //setUsuario(user)
         setNewIncidence((newIncidence) => ({ ...newIncidence, email: session?.user?.email as string })) 
         setIsLoading(false)
 

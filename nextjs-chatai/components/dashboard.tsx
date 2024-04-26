@@ -11,7 +11,7 @@ export default function Dashboard() {
                     <Link href="/myIncidences" className="text-black font-semibold rounded-lg bg-pink-400">Mis incidencias</Link>
                 </div>
                 <div className="flex flex-1 justify-center sm:justify-center align-center h-12">
-                    <Link href="/incidence/createIncidence" className="text-black font-semibold rounded-lg bg-pink-400">Crear incidencia</Link>
+                    <Link href="/myIncidences/createIncidence" className="text-black font-semibold rounded-lg bg-pink-400">Crear incidencia</Link>
                 </div>
                 <div className="flex flex-1 justify-center sm:justify-center align-center h-12">
                     <Link href="/myIncidences" className="text-black font-semibold rounded-lg bg-pink-400">Todas las incidencias</Link>

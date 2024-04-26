@@ -1,25 +1,12 @@
-import User from '@/models/User';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { ObjectId } from 'mongoose';
-import Loading from './loading';
-
-interface Usuario {
-    _id: ObjectId; // Specify the _id property type
-    email: string;
-    username: string;
-    open_incidences_count: number;
-    completed_incidences_count: number;
-}
+import { Usuario } from '@/types/User'
 
 export default function Incidencia({ incidencia, user}: { incidencia: any, user: Usuario}) {
     
     return (
         <tr>
             <td className="py-2 px-4">
-                <Link href={`/incidence/${incidencia._id}`}>
+                <Link href={`/myIncidences/${incidencia._id}`}>
                     {incidencia.name}
                 </Link>
             </td>

@@ -1,17 +1,16 @@
 'use client'
 
 import { useState, useEffect } from "react"
-import { useRouter, useParams } from 'next/navigation'; // Usamos next/router en lugar de next/navigation
+import { useRouter, useParams } from 'next/navigation';
 import Loading from '@/components/loading'
-import { useSession } from "next-auth/react";
-import { Usuario } from '@/types/User'
-import { ObjectId } from "mongoose";
+import { useUser } from "@/app/hooks/useUser";
 
 export default function Myincidence() {
 
     const router = useRouter()
+    const {usuario, isLoading} = useUser()
     const params = useParams()
-    const [isLoading, setIsLoading] = useState(true)
+    const [loading, setIsLoading] = useState(true)
     const [incidencia, setIncidencia] = useState({
         name: "",
         description: "",
@@ -20,26 +19,12 @@ export default function Myincidence() {
         email: ""
     });
 
-    const { data: session, status } = useSession({
-        required: true,
-        onUnauthenticated() {
-            router.push("/");
-        },
-    });
-    const [usuario, setUsuario] = useState<Usuario>({
-        _id: 0 as unknown as ObjectId, // Specify the _id property type
-        email: "",
-        username: "",
-        open_incidences_count: 0,
-        completed_incidences_count: 0,
-    })
-
     const incidenciaId = params.incidenceId
 
     const changeOpenIncident = () => {
         let user = usuario
         user.open_incidences_count = user.open_incidences_count-1
-        setUsuario(user)
+        return user
     } 
 
     const handleDelete = async () => {
@@ -50,10 +35,10 @@ export default function Myincidence() {
 
             if (res.status === 200) {
 
-                changeOpenIncident()
-                const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${usuario.email}`, {
+                const user = changeOpenIncident()
+                const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${user.email}`, {
                     method: 'PUT',
-                    body: JSON.stringify(usuario),
+                    body: JSON.stringify(user),
                     headers: {
                         "Content-Type": "application/json"
                     }
@@ -66,19 +51,6 @@ export default function Myincidence() {
     };
 
     useEffect(() => {
-
-        const getUser = async () => {
-
-            const email = session?.user?.email
-            const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${email}`, {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            const user = await resUpdate.json()
-            setUsuario(user as Usuario)
-        }
 
         const getIncidencia = async () => {
 
@@ -97,18 +69,16 @@ export default function Myincidence() {
                 ['solution']: incidence.solution,
                 ['email']: incidence.email
             })
-        };
-        
-        getUser()
+        }; 
         getIncidencia()
         setIsLoading(false)
 
-    }, []);
+    }, [isLoading]);
 
     return (
-        <div className="">
+        <>
             {
-                isLoading == true ? (
+                isLoading || loading ? (
                     <Loading />
                 ) : (
                     <div className="grid grid-cols-1">
@@ -127,6 +97,6 @@ export default function Myincidence() {
                     </div>
                 )
             }
-        </div>
+        </>
     );
 }

@@ -1,7 +1,6 @@
 'use client'
 import Link from 'next/link'
 
-
 export default function Dashboard() {
     return (
         <div className="col-span-1 rounded gap-4 max-h-max h-screen opacity-75 bg-blue-200">

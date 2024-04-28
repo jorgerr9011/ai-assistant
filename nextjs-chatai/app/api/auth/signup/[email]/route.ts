@@ -12,8 +12,6 @@ export async function GET(req: Request, { params }: any) {
         const { email } = params
         const userFound = await User.findOne({email})
 
-        //console.log(userFound)
-
         return NextResponse.json(userFound)
 
     } catch (error: any) {

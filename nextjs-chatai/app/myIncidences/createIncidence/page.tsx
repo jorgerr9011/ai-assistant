@@ -3,20 +3,19 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import Alerta400 from "@/components/alerta";
-import { ObjectId } from "mongoose";
 import { useSession } from "next-auth/react";
 import Loading from "@/components/loading";
 import { Incidencia } from '@/types/Incidence'
-import { Usuario } from '@/types/User'
+import { useUser } from "@/app/hooks/useUser";
 
 // un id tiene la siguiente pinta: "662a210392d0ccd9dd5eb5f8"
 
 export default function CreateIncidence() {
 
-    const router = useRouter()
-
     // useState para la alerta
     const [error400, setError400] = useState(false);
+    const {usuario, isLoading} = useUser()
+    const router = useRouter()
 
     // Tiene que estar a true en required porque necesitamos
     // que el usuario esté autenticado para poder crear una 
@@ -30,14 +29,7 @@ export default function CreateIncidence() {
         },
     });
 
-    const [isLoading, setIsLoading] = useState(true)
-    const [usuario, setUsuario] = useState<Usuario>({
-        _id: 0 as unknown as ObjectId, // Specify the _id property type
-        email: "",
-        username: "",
-        open_incidences_count: 0,
-        completed_incidences_count: 0,
-    })
+    const [loading, setIsLoading] = useState(true)
     const [newIncidence, setNewIncidence] = useState({
         name: "",
         description: "",
@@ -52,9 +44,9 @@ export default function CreateIncidence() {
 
     const changeOpenIncident = () => {
         let user = usuario
-        user.open_incidences_count = ++user.open_incidences_count   
-        setUsuario(user)
-    } 
+        user.open_incidences_count = ++user.open_incidences_count
+        return user
+    }
 
     const writeSolution = async (data: Incidencia) => {
 
@@ -75,7 +67,7 @@ export default function CreateIncidence() {
     const handleSubmit = async (event: FormEvent) => {
 
         const userEmail = usuario?.email
-        changeOpenIncident()
+        const user = changeOpenIncident()
 
         event.preventDefault()
 
@@ -92,7 +84,7 @@ export default function CreateIncidence() {
 
                 const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${userEmail}`, {
                     method: 'PUT',
-                    body: JSON.stringify(usuario),
+                    body: JSON.stringify(user),
                     headers: {
                         "Content-Type": "application/json"
                     }
@@ -119,27 +111,16 @@ export default function CreateIncidence() {
 
     useEffect(() => {
 
-        const getUser = async () => {
-
-            const email = session?.user?.email
-            const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${email}`, {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-            const user = await resUpdate.json()
-            setUsuario(user)
-        }
-        getUser()
-        setNewIncidence((newIncidence) => ({ ...newIncidence, email: session?.user?.email as string })) 
+        setNewIncidence((newIncidence) => ({ ...newIncidence, email: session?.user?.email as string }))
         setIsLoading(false)
 
-    }, [status])
+    }, [isLoading])
 
     return (
         <div className="grid grid-cols-1 pe-48">
-            {isLoading === false ? (
+            {isLoading || loading ? (
+                <Loading />
+            ) : (
                 <>
                     {error400 && <Alerta400 />}
                     <div className="flex flex-col w-2/5 mx-auto my-48 gap-2">
@@ -154,8 +135,6 @@ export default function CreateIncidence() {
                         </form>
                     </div>
                 </>
-            ) : (
-                <Loading />
             )}
         </div>
     )

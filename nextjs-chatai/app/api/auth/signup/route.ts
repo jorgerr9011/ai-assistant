@@ -2,14 +2,7 @@ import { NextResponse } from "next/server";
 import User from '@/models/User';
 import bcrypt from 'bcryptjs'
 import { connectDB } from "@/utils/db";
-import { ObjectId } from "mongoose";
-
-interface Usuario {
-    email: string;
-    password: string;
-    username: string;
-    _id: ObjectId; // Specify the _id property type
-}
+import { Usuario } from '@/types/User'
 
 export async function POST(req: Request) {
 

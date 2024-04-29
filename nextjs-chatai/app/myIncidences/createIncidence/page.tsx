@@ -82,6 +82,7 @@ export default function CreateIncidence() {
 
             if (res.status === 200) {
 
+                const inc = await res.json()
                 const resUpdate = await fetch(`http://localhost:3000/api/auth/signup/${userEmail}`, {
                     method: 'PUT',
                     body: JSON.stringify(user),
@@ -89,7 +90,7 @@ export default function CreateIncidence() {
                         "Content-Type": "application/json"
                     }
                 })
-                //writeSolution(inc)
+                writeSolution(inc)
 
                 if (resUpdate.status === 200) {
                     router.push('/myIncidences')

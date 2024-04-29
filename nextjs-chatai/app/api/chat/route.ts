@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const chain = new RemoteRunnable({
       url: 'http://localhost:8000/chat',
       options: {
-        timeout: 10000000
+        timeout: 9000000000000000
       }
     })
 

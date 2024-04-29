@@ -37,18 +37,25 @@ export async function PUT(req: Request, { params }: any) {
         const incidencia = await res.json()
         
         const chain = new RemoteRunnable({
-            url: 'http://localhost:8000/chat',
+            url: 'http://localhost:8000/incidence',
             options: {
                 timeout: 10000000
             }
         })
 
-        const result = await chain.invoke({
-            chat_history: "",
+        /*const result = await chain.invoke({
+            //chat_history: "",
             question: incidencia.description,
+        })*/
+        console.log(incidencia)
+
+        const peticion = "hola, que tal?"
+        const result = await chain.invoke({
+            input: peticion
         })
 
-        const incidenceUpdated = formatIncidence(incidencia, result)
+        console.log(result)
+        /*const incidenceUpdated = formatIncidence(incidencia, result)
 
         const res2 = await fetch(`http://localhost:3000/api/incidence/${params.incidenceId}`, {
             method: "PUT",
@@ -57,14 +64,14 @@ export async function PUT(req: Request, { params }: any) {
                 "Content-Type": "application/json"
             }
         });
-
-        if (res2.status === 200) {
-            return NextResponse.json(incidenceUpdated, {
+*/
+        if (res.status === 200) {
+            return NextResponse.json(result, {
                 status: 200
             })
 
         } else {
-            return NextResponse.json(res2.text, {
+            return NextResponse.json(res.text, {
                 status:400
             })
         }

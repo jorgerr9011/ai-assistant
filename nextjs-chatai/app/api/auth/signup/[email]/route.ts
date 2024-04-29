@@ -35,7 +35,6 @@ export async function PUT(req: Request, { params }: any) {
         const userUpdated = await User.findOneAndUpdate({ email }, body, {
             new: true
         });
-        //const userUpdated = await User.findOneAndUpdate({ email }, body)
 
         return NextResponse.json(userUpdated)
 

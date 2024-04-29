@@ -29,6 +29,10 @@ const userSchema = new Schema({
         type: Number,
         default: 0
     },
+    chat_history: {
+        type: Array,
+        default: []
+    },
     role: {
         type: String
     }

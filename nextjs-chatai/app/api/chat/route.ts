@@ -23,22 +23,19 @@ export async function POST(req: Request) {
     const currentMessageContent = messages[messages.length - 1].content;
 
     console.log(formattedPreviousMessages)
-
     console.log(currentMessageContent)
 
     const chain = new RemoteRunnable({
       url: 'http://localhost:8000/chat',
       options: {
-        timeout: 9000000000000000
+        timeout: 1000000000
       }
     })
 
     const result = await chain.stream({
       chat_history: formattedPreviousMessages.join('\n'),
-      question: currentMessageContent,
+      input: currentMessageContent,
     })
-    //const result = await chain.stream(currentMessageContent)
-    //const result = await chain.stream(formattedPreviousMessages.join('\n'), currentMessageContent)
 
     const decoder = new TextDecoder()
     const encoder = new TextEncoder()

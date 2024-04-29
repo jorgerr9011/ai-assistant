@@ -21,6 +21,7 @@ export const useUser = () => {
         username: "",
         open_incidences_count: 0,
         closed_incidences_count: 0,
+        chat_history: []
     })
     const [isLoading, setIsLoading] = useState(true)
     //const [usuario, setUsuario] = useState<Usuario>()

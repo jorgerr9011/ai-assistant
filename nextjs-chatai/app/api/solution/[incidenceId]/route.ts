@@ -29,7 +29,7 @@ export async function PUT(req: Request, { params }: any) {
         
         const result = await chain.invoke(incidencia.description)
 
-        console.log(result)
+        //console.log(result)
         const incidenceUpdated = formatIncidence(incidencia, result)
 
         const res2 = await fetch(`http://localhost:3000/api/incidence/${params.incidenceId}`, {

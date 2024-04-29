@@ -35,21 +35,11 @@ export default function Home() {
       ) : (
         <>
           <div className="grid grid-cols-1">
-            <div className=''>
-
-              <Card title={titulo1} text="Hope you can resolve your incidences!" />
-
-            </div>
+              <Card title={titulo1} text="Hope you can resolve your incidences!" /> 
           </div>
-
           <div className="grid grid-cols-2">
-            <div className=''>
-              <Card title="Open tickets" text={usuario?.open_incidences_count as unknown as string} />
-            </div>
-
-            <div className=''>
-              <Card title="Completed tickets" text={usuario?.completed_incidences_count as unknown as string} />
-            </div>
+              <Card title="Open tickets" text={usuario?.open_incidences_count as unknown as string} />      
+              <Card title="Closed tickets" text={usuario?.closed_incidences_count as unknown as string} />
           </div>
         </>
       )}

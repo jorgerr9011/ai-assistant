@@ -5,10 +5,10 @@ import { useRouter, useParams } from 'next/navigation';
 import Loading from '@/components/loading'
 import { useUser } from "@/app/hooks/useUser";
 
-export default function Myincidence() {
+export default function Incidence() {
 
     const router = useRouter()
-    const {usuario, isLoading} = useUser()
+    const { usuario, isLoading } = useUser()
     const params = useParams()
     const [loading, setIsLoading] = useState(true)
     const [incidencia, setIncidencia] = useState({
@@ -23,9 +23,9 @@ export default function Myincidence() {
 
     const changeOpenIncident = () => {
         let user = usuario
-        user.open_incidences_count = user.open_incidences_count-1
+        user.open_incidences_count = user.open_incidences_count - 1
         return user
-    } 
+    }
 
     const handleDelete = async () => {
         if (window.confirm("¿Estas seguro de querer borrar esta incidencia?")) {
@@ -54,26 +54,31 @@ export default function Myincidence() {
 
         const getIncidencia = async () => {
 
-            const res = await fetch(`http://localhost:3000/api/incidence/${incidenciaId}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+            try {
+                const res = await fetch(`http://localhost:3000/api/incidence/${incidenciaId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
 
-            const incidence = await res.json();
-            setIncidencia({
-                ['name']: incidence.name,
-                ['description']: incidence.description,
-                ['status']: incidence.status,
-                ['solution']: incidence.solution,
-                ['email']: incidence.email
-            })
-        }; 
+                const incidence = await res.json();
+                setIncidencia({
+                    ['name']: incidence.name,
+                    ['description']: incidence.description,
+                    ['status']: incidence.status,
+                    ['solution']: incidence.solution,
+                    ['email']: incidence.email
+                })
+            } catch (error: any) {
+
+                console.log(error.message)
+            }
+        };
         getIncidencia()
         setIsLoading(false)
 
-    }, [isLoading]);
+    }, [isLoading, incidencia]);
 
     return (
         <>

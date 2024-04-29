@@ -22,6 +22,10 @@ export async function POST(req: Request) {
     const formattedPreviousMessages = messages.slice(0, -1).map(formatMessage);
     const currentMessageContent = messages[messages.length - 1].content;
 
+    console.log(formattedPreviousMessages)
+
+    console.log(currentMessageContent)
+
     const chain = new RemoteRunnable({
       url: 'http://localhost:8000/chat',
       options: {

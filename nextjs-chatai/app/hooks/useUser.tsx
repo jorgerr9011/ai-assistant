@@ -20,7 +20,7 @@ export const useUser = () => {
         email: "",
         username: "",
         open_incidences_count: 0,
-        completed_incidences_count: 0,
+        closed_incidences_count: 0,
     })
     const [isLoading, setIsLoading] = useState(true)
     //const [usuario, setUsuario] = useState<Usuario>()

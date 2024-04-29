@@ -12,7 +12,7 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        required: [true, "La contrasela es requerida"],
+        required: [true, "La contraseña es requerida"],
         select: false
     },
     username: {
@@ -21,7 +21,7 @@ const userSchema = new Schema({
         minLength: [3, "El usuario debe tener al menos 3 carácteres"],
         maxLength: [50, "El usuario puede tener como mucho 50 carácteres"]
     },
-    completed_incidences_count: {
+    closed_incidences_count: {
         type: Number,
         default: 0
     },

@@ -5,5 +5,5 @@ export interface Usuario {
     email: string;
     username: string;
     open_incidences_count: number;
-    completed_incidences_count: number;
+    closed_incidences_count: number;
 }

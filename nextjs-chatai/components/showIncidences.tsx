@@ -28,7 +28,8 @@ export default function ShowIncidences({allIncidences}: {allIncidences: boolean}
         email: "",
         username: "",
         open_incidences_count: 0,
-        completed_incidences_count: 0,
+        closed_incidences_count: 0,
+        chat_history: []
     })
 
     const changeOpenIncident = () => {

@@ -7,5 +7,5 @@ export interface Usuario {
     username: string;
     open_incidences_count: number;
     closed_incidences_count: number;
-    chat_history: Array<Message>;
+    chat_history: Array<object>;
 }

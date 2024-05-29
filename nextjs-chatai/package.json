@@ -27,6 +27,7 @@
     "next-auth": "^4.24.6",
     "react": "^18",
     "react-dom": "^18",
+    "react-select": "^5.8.0",
     "usellm": "^0.13.0"
   },
   "pnpm": {

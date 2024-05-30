@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 export const useIncidence = ({ params } : { params: any }) => {
 
-    const [loading, setIsLoading] = useState(true)
+    const [isloading, setIsLoading] = useState(true)
     const [incidencia, setIncidencia] = useState({
         name: "",
         description: "",
@@ -46,6 +46,6 @@ export const useIncidence = ({ params } : { params: any }) => {
 
     return {
         incidencia, 
-        loading
+        isloading
     }
 }

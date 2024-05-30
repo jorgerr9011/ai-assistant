@@ -11,19 +11,7 @@ export default function Incidence() {
     const router = useRouter()
     const { usuario, isLoading } = useUser()
     const params = useParams()
-    //const [loading, setIsLoading] = useState(true)
-
-    const {incidencia, loading} = useIncidence({params})
-
-    /*const [incidencia, setIncidencia] = useState({
-        name: "",
-        description: "",
-        status: "",
-        solution: "",
-        email: ""
-    });
-
-    const incidenciaId = params.incidenceId*/
+    const {incidencia, isloading} = useIncidence({params})
 
     const changeOpenIncident = () => {
         let user = usuario
@@ -53,41 +41,11 @@ export default function Incidence() {
             }
         }
     };
-/*
-    useEffect(() => {
-
-        const getIncidencia = async () => {
-
-            try {
-                const res = await fetch(`http://localhost:3000/api/incidence/${incidenciaId}`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                });
-
-                const incidence = await res.json();
-                setIncidencia({
-                    ['name']: incidence.name,
-                    ['description']: incidence.description,
-                    ['status']: incidence.status,
-                    ['solution']: incidence.solution,
-                    ['email']: incidence.email
-                })
-            } catch (error: any) {
-
-                console.log(error.message)
-            }
-        };
-        getIncidencia()
-        setIsLoading(false)
-
-    }, [isLoading, incidencia]);*/
 
     return (
         <>
             {
-                isLoading || loading ? (
+                isLoading || isloading ? (
                     <Loading />
                 ) : (
                     <div className="grid grid-cols-2">

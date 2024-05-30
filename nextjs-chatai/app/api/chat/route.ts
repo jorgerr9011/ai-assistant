@@ -1,15 +1,7 @@
-import { Ollama } from "@langchain/community/llms/ollama";
 import { Message as VercelChatMessage, StreamingTextResponse, streamToResponse, Message } from 'ai';
-import { PromptTemplate } from "@langchain/core/prompts";
-import { BytesOutputParser } from '@langchain/core/output_parsers';
 import { RemoteRunnable } from "@langchain/core/runnables/remote"
-import { RunnableWithMessageHistory, RunnableConfig } from "langchain/runnables";
 import { NextResponse } from 'next/server'
-import { Usuario } from "@/types/User";
-import { connectDB } from "@/utils/db";
 import User from "@/models/User";
-
-//export const runtime = 'edge';
 
 const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;

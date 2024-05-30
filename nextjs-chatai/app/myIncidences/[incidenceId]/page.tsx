@@ -86,7 +86,7 @@ export default function Incidence() {
                 isLoading || loading ? (
                     <Loading />
                 ) : (
-                    <div className="grid grid-cols-1">
+                    <div className="grid grid-cols-2">
                         <div className="flex flex-col">
                             <a href="#" className="my-24 mx-24 w-6/12 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700">
                                 <div className="p-4 leading-normal">
@@ -96,17 +96,18 @@ export default function Incidence() {
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{incidencia.status}</p>
                                 </div>
                             </a>
+                            <div className="flex-flex-col mx-auto">
+                                <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Eliminar</button>
+                            </div>
                         </div>
-                        <div className="flex flex-col">
-                            <a href="#" className="mx-24 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700">
+                        <div className="flex flex-col my-24 w-full">
+                            <a href="#" className="items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-gray-700">
                                 <div className="p-4 leading-normal">
                                     <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Solución:</h1>
                                     <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{incidencia.solution}</p>
                                 </div>
                             </a>
-                            <div className="flex-flex-col mx-auto">
-                                <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Eliminar</button>
-                            </div>
+                            
                         </div>
                     </div>
                 )

@@ -36,6 +36,8 @@ const userSchema = new Schema({
     role: {
         type: String
     }
+}, {
+    timestamps: true
 })
 
 // Si entre todos los modelos existe el modelo Incidence, entonces le estamos 

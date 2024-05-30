@@ -5,16 +5,10 @@ import Link from 'next/link'
 import { useState } from 'react';
 import { Usuario } from '@/types/User'
 
-/*
-Si quisiera ejecutar lo mismo que con useSession en el lado
-del servidor, tendría que usar la siguiente función
-import { getServerSession } from 'next-auth';
-*/
-
 export default function Header() {
 
     const { data: session, status } = useSession()
-    const [usuario, setUser] = useState("")
+    //const [usuario, setUser] = useState("")
     const user = session?.user as Usuario
     
     return (

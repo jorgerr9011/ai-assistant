@@ -4,14 +4,18 @@ import { useState, useEffect } from "react"
 import { useRouter, useParams } from 'next/navigation';
 import Loading from '@/components/loading'
 import { useUser } from "@/app/hooks/useUser";
+import { useIncidence } from "@/app/hooks/useIncidence";
 
 export default function Incidence() {
 
     const router = useRouter()
     const { usuario, isLoading } = useUser()
     const params = useParams()
-    const [loading, setIsLoading] = useState(true)
-    const [incidencia, setIncidencia] = useState({
+    //const [loading, setIsLoading] = useState(true)
+
+    const {incidencia, loading} = useIncidence({params})
+
+    /*const [incidencia, setIncidencia] = useState({
         name: "",
         description: "",
         status: "",
@@ -19,7 +23,7 @@ export default function Incidence() {
         email: ""
     });
 
-    const incidenciaId = params.incidenceId
+    const incidenciaId = params.incidenceId*/
 
     const changeOpenIncident = () => {
         let user = usuario
@@ -29,7 +33,7 @@ export default function Incidence() {
 
     const handleDelete = async () => {
         if (window.confirm("¿Estas seguro de querer borrar esta incidencia?")) {
-            const res = await fetch(`/api/incidence/${incidenciaId}`, {
+            const res = await fetch(`/api/incidence/${params.incidenceId}`, {
                 method: "DELETE",
             });
 
@@ -49,7 +53,7 @@ export default function Incidence() {
             }
         }
     };
-
+/*
     useEffect(() => {
 
         const getIncidencia = async () => {
@@ -78,7 +82,7 @@ export default function Incidence() {
         getIncidencia()
         setIsLoading(false)
 
-    }, [isLoading, incidencia]);
+    }, [isLoading, incidencia]);*/
 
     return (
         <>

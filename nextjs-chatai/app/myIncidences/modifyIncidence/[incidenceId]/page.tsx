@@ -59,16 +59,6 @@ export default function ModifyIncidence() {
         setModifiedIncidence({ ...modifiedIncidence, [e.target.name]: e.target.value })
     }
 
-    const handleRestore = () => {
-        setModifiedIncidence({
-            name: incidencia.name,
-            description: incidencia.description,
-            status: incidencia.status,
-            solution: incidencia.solution,
-            email: incidencia.email
-        })
-    }
-
     return (
         <div className="grid grid-cols-1 pe-48">
             {/*{isLoading || loading ? (*/}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from "react"
-import Incidence from '@/models/Incidence'
+import { Incidencia } from '@/types/Incidence'
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 
@@ -9,7 +9,7 @@ export const useIncidences = ({ allIncidences } : { allIncidences: boolean }) =>
 
     const router = useRouter()
     const [isLoading, setisLoading] = useState(true)
-    const [listIncidences, setIncidences] = useState<typeof Incidence[]>([])
+    const [listIncidences, setIncidences] = useState<Incidencia[]>([])
     const { data: session, status } = useSession({
         required: true,
         onUnauthenticated() {

@@ -1,18 +1,17 @@
 import Link from 'next/link';
-import { Usuario } from '@/types/User'
 
-export default function Incidencia({ incidencia}: any) {
+export default function Incidence({ incidence }: any) {
     
     return (
         <tr>
             <td className="py-2 px-4">
-                <Link href={`/myIncidences/${incidencia._id}`}>
-                    {incidencia.name}
+                <Link href={`/myIncidences/${incidence._id}`}>
+                    {incidence.name}
                 </Link>
             </td>
-            <td className="py-2 px-4">{incidencia.description}</td>
-            <td className="py-2 px-4">{incidencia.status}</td>
-            <td className="py-2 px-4">{new Date(incidencia.createdAt).toLocaleString()}</td>
+            <td className="py-2 px-4">{incidence.description}</td>
+            <td className="py-2 px-4">{incidence.status}</td>
+            <td className="py-2 px-4">{new Date(incidence.createdAt).toLocaleString()}</td>
         </tr>
     );
 }

@@ -29,7 +29,6 @@
     "next-auth": "^4.24.6",
     "react": "^18",
     "react-dom": "^18",
-    "ts-jest": "^29.1.2",
     "usellm": "^0.13.0"
   },
   "pnpm": {

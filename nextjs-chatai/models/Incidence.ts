@@ -13,7 +13,8 @@ const incidenceSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['CLOSED', 'OPEN']
+        enum: ['CLOSED', 'OPEN'],
+        default: 'OPEN'
     },
     solution: {
         type: String,

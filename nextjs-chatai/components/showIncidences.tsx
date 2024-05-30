@@ -197,6 +197,7 @@ export default function ShowIncidences({ allIncidences }: { allIncidences: boole
                                 <th className="py-2 px-4 text-left">Descripción</th>
                                 <th className="py-2 px-4 text-left">Estado</th>
                                 <th className="py-2 px-4 text-left">Fecha creación</th>
+                                <th className="py-2 px-4 text-left">Editar</th>
                             </tr>
                         </thead>
 

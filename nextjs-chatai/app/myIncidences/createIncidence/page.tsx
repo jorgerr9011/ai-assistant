@@ -3,31 +3,15 @@
 import { ChangeEvent, FormEvent, useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 import Alerta400 from "@/components/alerta";
-import { useSession } from "next-auth/react";
 import Loading from "@/components/loading";
 import { Incidencia } from '@/types/Incidence'
 import { useUser } from "@/app/hooks/useUser";
 
-// un id tiene la siguiente pinta: "662a210392d0ccd9dd5eb5f8"
-
 export default function CreateIncidence() {
 
-    // useState para la alerta
     const [error400, setError400] = useState(false);
     const {usuario, isLoading} = useUser()
     const router = useRouter()
-
-    // Tiene que estar a true en required porque necesitamos
-    // que el usuario esté autenticado para poder crear una 
-    // nueva incidencia, y esta tenga asociada el email del 
-    // user que la creo
-    const { data: session, status } = useSession({
-        required: true,
-        onUnauthenticated() {
-            router.push("/");
-            router.refresh();
-        },
-    });
 
     const [loading, setIsLoading] = useState(true)
     const [newIncidence, setNewIncidence] = useState({
@@ -112,7 +96,7 @@ export default function CreateIncidence() {
 
     useEffect(() => {
 
-        setNewIncidence((newIncidence) => ({ ...newIncidence, email: session?.user?.email as string }))
+        setNewIncidence((newIncidence) => ({ ...newIncidence, email: usuario?.email as string }))
         setIsLoading(false)
 
     }, [isLoading])

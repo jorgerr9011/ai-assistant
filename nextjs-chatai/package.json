@@ -30,6 +30,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-select": "^5.8.0",
+    "ts-jest": "^29.1.4",
     "usellm": "^0.13.0"
   },
   "pnpm": {

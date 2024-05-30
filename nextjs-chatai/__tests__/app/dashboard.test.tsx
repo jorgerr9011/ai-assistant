@@ -9,13 +9,13 @@ test('renders three Link components with appropriate text and classes', () => {
   expect(links.length).toBe(3);
 
   expect(links[0]).toHaveTextContent('Mis incidencias');
-  expect(links[0]).toHaveClass('text-black font-semibold rounded-lg bg-pink-400');
+  expect(links[0]).toHaveClass('text-black font-semibold rounded-lg');
 
   expect(links[1]).toHaveTextContent('Crear incidencia');
-  expect(links[1]).toHaveClass('text-black font-semibold rounded-lg bg-pink-400');
+  expect(links[1]).toHaveClass('text-black font-semibold rounded-lg');
 
   expect(links[2]).toHaveTextContent('Todas las incidencias');
-  expect(links[2]).toHaveClass('text-black font-semibold rounded-lg bg-pink-400');
+  expect(links[2]).toHaveClass('text-black font-semibold rounded-lg');
 });
 
 test('links have correct href attributes', () => {

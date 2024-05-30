@@ -6,63 +6,76 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Alerta400 from "@/components/alerta";
 import Loading from "@/components/loading";
 import { useIncidence } from "@/app/hooks/useIncidence";
+import { Incidencia } from "@/types/Incidence"
+import { ObjectId } from "mongoose";
 
 export default function ModifyIncidence() {
 
     const [error400, setError400] = useState(false);
-    const {usuario, isLoading} = useUser()
-    //const [loading, setIsLoading] = useState(true)
     const params = useParams()
     const router = useRouter()
 
     const {incidencia, isloading} = useIncidence({params})
-    const [modifiedIncidence, setModifiedIncidence] = useState({
-        name: incidencia.name,
-        description: incidencia.description,
-        status: incidencia.status,
-        solution: incidencia.solution,
-        email: incidencia.email
+    const [modifiedIncidence, setModifiedIncidence] = useState<Incidencia>({
+        _id: 1 as unknown as ObjectId,
+        name: "",
+        description: "",
+        status: "OPEN",
+        solution: "",
+        email: "",
+        createdAt: new Date(),
+        updatedAt: new Date()
     })
 
     const handleSubmit = async (event: FormEvent) => {
 
         event.preventDefault()
 
-        try {
-            const res = await fetch('/api/incidence/'+params.incidenceId, {
-                method: 'PUT',
-                body: JSON.stringify(modifiedIncidence),
-                headers: {
-                    "Content-Type": "application/json"
+        if (window.confirm("¿Estas seguro de querer modificar esta incidencia?")) {
+
+            try {
+                const res = await fetch(`/api/incidence/${params.incidenceId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(modifiedIncidence),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                if (res.status === 200) {
+                    router.push('/myIncidences')
+                    router.refresh()
                 }
-            })
 
-            if (res.status === 200) {
+                if (res.status === 400) {
+                    setError400(true)
+                    setTimeout(() => {
+                        setError400(false);
+                    }, 5000); // Ocultar la alerta después de 5 segundos
+                }
 
-                router.push('/myIncidences')
-                router.refresh()
+            } catch (error: any) {
+                console.log("Error message: " + error.message)
             }
-
-            if (res.status === 400) {
-                setError400(true)
-                setTimeout(() => {
-                    setError400(false);
-                }, 5000); // Ocultar la alerta después de 5 segundos
-            }
-
-        } catch (error: any) {
-            console.log("Error message: " + error.message)
         }
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setModifiedIncidence({ ...modifiedIncidence, [e.target.name]: e.target.value })
+        setModifiedIncidence((modifiedIncidence) => ({ ...modifiedIncidence, [e.target.name]: e.target.value }))
     }
+
+    useEffect(() => {
+
+        if (incidencia != undefined) {
+            setModifiedIncidence(incidencia)
+        }
+
+    }, [isloading])
 
     return (
         <div className="grid grid-cols-1 pe-48">
-            {/*{isLoading || loading ? (*/}
-            { isLoading ? (
+
+            { isloading ? (
                 <Loading />
             ) : (
                 <>
@@ -71,7 +84,7 @@ export default function ModifyIncidence() {
                         <form onSubmit={handleSubmit}>
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Nombre</label>
                             <input 
-                                defaultValue={incidencia.name} 
+                                defaultValue={incidencia?.name} 
                                 onChange={handleChange} 
                                 name="name" 
                                 type="text" 
@@ -79,7 +92,7 @@ export default function ModifyIncidence() {
                             />
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Detalles</label>
                             <textarea 
-                                defaultValue={incidencia.description} 
+                                defaultValue={incidencia?.description} 
                                 onChange={handleChange} 
                                 name="description" 
                                 className=" no-resize appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 h-48 resize-none" id="message"

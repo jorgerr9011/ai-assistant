@@ -11,12 +11,14 @@ import { ObjectId } from 'mongoose'
 import { Usuario } from '@/types/User'
 import Select from 'react-select'
 import { getOrder } from '@/lib/order'
+import Alerta400 from "@/components/alerta";
 
 export default function ShowIncidences({ allIncidences }: { allIncidences: boolean }) {
 
     const router = useRouter()
     const { isLoading, listIncidences } = useIncidences({ allIncidences })
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
+    const [error400, setError400] = useState(false);
     const [elementOrder, setElementOrder] = useState<string>("createdAt")
     const [order, setOrder] = useState<string>("ascendente")
     const [currentPage, setCurrentPage] = useState(0)
@@ -144,82 +146,93 @@ export default function ShowIncidences({ allIncidences }: { allIncidences: boole
         { value: 'status', label: 'Estado' },
     ]
 
+    const handleDataFromChild = (data: boolean) => {
+        setError400(data)
+        setTimeout(() => {
+            setError400(false);
+        }, 5000); // Ocultar la alerta después de 5 segundos
+    }
+
     return (
         <div className="grid grid-cols-1">
             {isLoading === false && loading === false ? (
-                <div className="container mx-auto">
-                    <div className='flex flex-col gap-2 py-2'>
-                        <input
-                            type="text"
-                            className="pl-4 form-control rounded-md text-black flex-grow w-5/12 border border-gray-400 focus:border-red-400"
-                            placeholder='Búsqueda de incidencia'
-                            value={search}
-                            onChange={onSearchChange} />
+                <>
+                    { error400 && <Alerta400 description={"No es posible editar las incidencias que ya han sido cerradas."} /> }
+                    
+                    <div className="relative z-0 container mx-auto">
+                        <div className='flex flex-col gap-2 py-2'>
+                            <input
+                                type="text"
+                                className="pl-4 form-control rounded-md text-black flex-grow w-5/12 border border-gray-400 focus:border-red-400"
+                                placeholder='Búsqueda de incidencia'
+                                value={search}
+                                onChange={onSearchChange} />
 
-                        <div className='flex flex-row items-start'>
+                            <div className='flex flex-row items-start'>
 
-                            <div className='flex flex-col w-3/12'>
-                                <label className='px-2'>Ordenación:</label>
-                                <select className='pl-4 py-2' id="ordenamiento" onChange={handleOrderFilter}>
-                                    <option value="ascendente">Ascendente</option>
-                                    <option value="descendente">Descendente</option>
-                                </select>
-                            </div>
+                                <div className='flex flex-col w-3/12'>
+                                    <label className='px-2'>Ordenación:</label>
+                                    <select className='pl-4 py-2' id="ordenamiento" onChange={handleOrderFilter}>
+                                        <option value="ascendente">Ascendente</option>
+                                        <option value="descendente">Descendente</option>
+                                    </select>
+                                </div>
 
-                            <div className='flex flex-col w-4/12 pl-4'>
-                                <label className='px-2'>Filtrar por:</label>
-                                <Select
-                                    id="orderFilter"
-                                    className="block text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                                    options={orderOptions}
-                                    onChange={handleElementFilterChange}
-                                    defaultValue={orderOptions[0]}
-                                />
-                            </div>
+                                <div className='flex flex-col w-4/12 pl-4'>
+                                    <label className='px-2'>Filtrar por:</label>
+                                    <Select
+                                        id="orderFilter"
+                                        className="block text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                        options={orderOptions}
+                                        onChange={handleElementFilterChange}
+                                        defaultValue={orderOptions[0]}
+                                    />
+                                </div>
 
-                            <div className='flex flex-col w-4/12 pl-4'>
-                                <label className='px-2'>Filtrar por estado:</label>
-                                <Select
-                                    id="statusFilter"
-                                    className="block text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                                    options={statusOptions}
-                                    onChange={handleStatusFilterChange}
-                                    defaultValue={statusOptions[0]}
-                                />
+                                <div className='flex flex-col w-4/12 pl-4'>
+                                    <label className='px-2'>Filtrar por estado:</label>
+                                    <Select
+                                        id="statusFilter"
+                                        className="block text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                        options={statusOptions}
+                                        onChange={handleStatusFilterChange}
+                                        defaultValue={statusOptions[0]}
+                                    />
+                                </div>
                             </div>
                         </div>
+
+                        <table className="my-4 min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                            <thead className="bg-gray-800 text-white">
+                                <tr>
+                                    <th className="py-2 px-4 text-left">Nombre</th>
+                                    <th className="py-2 px-4 text-left">Descripción</th>
+                                    <th className="py-2 px-4 text-left">Estado</th>
+                                    <th className="py-2 px-4 text-left">Fecha creación</th>
+                                    <th className="py-2 px-4 text-left">Editar</th>
+                                </tr>
+                            </thead>
+
+                            {usuario != undefined ? (
+                                <tbody>
+                                    {filteredIncidences().map((item: Incidencia) => (
+                                        <Incidence key={item._id} incidence={item} onData={handleDataFromChild} />
+                                    ))}
+                                </tbody>
+                            ) : (
+                                <></>
+                            )}
+
+                        </table>
+
+                        <button onClick={previousPage} className="button button-primary rounded-xl m-4 bg-slate-500">Anterior</button>
+                        <label> {currentPage} </label>
+                        <button onClick={nextPage} className="button button-primary rounded-xl m-4 bg-slate-500">Siguiente</button>
+
+                        <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Eliminar</button>
+
                     </div>
-
-                    <table className="my-4 min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-                        <thead className="bg-gray-800 text-white">
-                            <tr>
-                                <th className="py-2 px-4 text-left">Nombre</th>
-                                <th className="py-2 px-4 text-left">Descripción</th>
-                                <th className="py-2 px-4 text-left">Estado</th>
-                                <th className="py-2 px-4 text-left">Fecha creación</th>
-                                <th className="py-2 px-4 text-left">Editar</th>
-                            </tr>
-                        </thead>
-
-                        {usuario != undefined ? (
-                            <tbody>
-                                {filteredIncidences().map((item: Incidencia) => (
-                                    <Incidence key={item._id} incidence={item} />
-                                ))}
-                            </tbody>
-                        ) : (
-                            <></>
-                        )}
-
-                    </table>
-
-                    <button onClick={previousPage} className="button button-primary rounded-xl m-4 bg-slate-500">Anterior</button>
-                    <label> {currentPage} </label>
-                    <button onClick={nextPage} className="button button-primary rounded-xl m-4 bg-slate-500">Siguiente</button>
-
-                    <button onClick={handleDelete} className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Eliminar</button>
-
-                </div>
+                </>
             ) : (
                 <Loading />
             )

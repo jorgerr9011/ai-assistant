@@ -107,8 +107,9 @@ export default function CreateIncidence() {
                 <Loading />
             ) : (
                 <>
-                    {error400 && <Alerta400 />}
-                    <div className="flex flex-col w-2/5 mx-auto my-48 gap-2">
+                    {error400 && <Alerta400 description={"Se ha producido un error al procesar su solicitud. Por favor, recuerde que son necesarios todos los campos del formulario."} />}
+
+                    <div className="relative z-0 flex flex-col w-2/5 mx-auto my-48 gap-2">
                         <form onSubmit={handleSubmit}>
                             <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mt-4 mb-4">Nombre</label>
                             <input onChange={handleChange} name="name" type="text" className="rounded-md flex-grow w-full border border-gray-400 focus:border-red-400" />

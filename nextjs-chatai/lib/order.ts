@@ -33,9 +33,9 @@ const orderByName = (listInc: Incidencia[], orden: string): Incidencia[] => {
     })
 }
 
-const orderByStatus = (listInc: Incidencia[], orden: string): Incidencia[] => {
+const orderByStatus = (listInc: Incidencia[], orden: string) => {
 
-    return listInc.sort((a, b) => {
+    return listInc.sort((a: any, b: any) => {
         const statusA = a.status.toLowerCase()
         const statusB = b.status.toLowerCase()
 

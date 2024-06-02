@@ -19,8 +19,8 @@ export default function ShowIncidences({ allIncidences }: { allIncidences: boole
     const { isLoading, listIncidences } = useIncidences({ allIncidences })
     const [selectedStatus, setSelectedStatus] = useState<string | null>(null)
     const [error400, setError400] = useState(false);
-    const [elementOrder, setElementOrder] = useState<string>("createdAt")
-    const [order, setOrder] = useState<string>("ascendente")
+    const [elementOrder, setElementOrder] = useState<string>('createdAt')
+    const [order, setOrder] = useState<string>('ascendente')
     const [currentPage, setCurrentPage] = useState(0)
     const [search, setSearch] = useState('')
     const [loading, setLoading] = useState(true)
@@ -82,9 +82,12 @@ export default function ShowIncidences({ allIncidences }: { allIncidences: boole
     const filteredIncidences = (): Incidencia[] => {
 
         let listInc: Incidencia[] = listIncidences
-        listInc = getOrder(listInc, order, elementOrder)
 
-        if (selectedStatus !== "null") {
+        if (elementOrder !== null) {
+            listInc = getOrder(listInc, order, elementOrder)
+        }
+
+        if (selectedStatus !== null) {
             listInc = listInc.filter((inci: Incidencia) => inci.status.includes(selectedStatus ? selectedStatus : ""))
         }
 
@@ -140,10 +143,15 @@ export default function ShowIncidences({ allIncidences }: { allIncidences: boole
         { value: 'CLOSED', label: 'Cerradas' },
     ]
 
-    const orderOptions = [
+    const attOptions = [
         { value: 'createdAt', label: 'Fecha creación' },
         { value: 'name', label: 'Nombre incidencia' },
         { value: 'status', label: 'Estado' },
+    ]
+
+    const orderOptions = [
+        { value: 'ascendente', label: 'Ascendente' },
+        { value: 'descendente', label: 'Descendente' },
     ]
 
     const handleDataFromChild = (data: boolean) => {
@@ -170,22 +178,25 @@ export default function ShowIncidences({ allIncidences }: { allIncidences: boole
 
                             <div className='flex flex-row items-start'>
 
-                                <div className='flex flex-col w-3/12'>
-                                    <label className='px-2'>Ordenación:</label>
-                                    <select className='pl-4 py-2' id="ordenamiento" onChange={handleOrderFilter}>
-                                        <option value="ascendente">Ascendente</option>
-                                        <option value="descendente">Descendente</option>
-                                    </select>
-                                </div>
-
                                 <div className='flex flex-col w-4/12 pl-4'>
                                     <label className='px-2'>Filtrar por:</label>
                                     <Select
                                         id="orderFilter"
                                         className="block text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                                         options={orderOptions}
-                                        onChange={handleElementFilterChange}
+                                        onChange={handleOrderFilter}
                                         defaultValue={orderOptions[0]}
+                                    />
+                                </div>
+
+                                <div className='flex flex-col w-4/12 pl-4'>
+                                    <label className='px-2'>Filtrar por:</label>
+                                    <Select
+                                        id="attFilter"
+                                        className="block text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                                        options={attOptions}
+                                        onChange={handleElementFilterChange}
+                                        defaultValue={attOptions[0]}
                                     />
                                 </div>
 

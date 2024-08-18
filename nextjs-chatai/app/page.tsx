@@ -37,10 +37,6 @@ export default function Home() {
           <div className="grid grid-cols-1">
               <Card title={titulo1} text="Hope you can resolve your incidences!" /> 
           </div>
-          <div className="grid grid-cols-2">
-              <Card title="Open tickets" text={usuario?.open_incidences_count as unknown as string} />      
-              <Card title="Closed tickets" text={usuario?.closed_incidences_count as unknown as string} />
-          </div>
         </>
       )}
     </div>

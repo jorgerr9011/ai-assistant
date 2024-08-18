@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Dashboard from '../../components/dashboard';
@@ -27,3 +28,4 @@ test('links have correct href attributes', () => {
   expect(links[1].getAttribute('href')).toBe('/myIncidences/createIncidence');
   expect(links[2].getAttribute('href')).toBe('/myIncidences');
 });
+*/

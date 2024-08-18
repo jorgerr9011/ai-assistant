@@ -40,7 +40,7 @@ export default function Login() {
     }
 
     return (
-        <div className="grid grid-cols-1 pe-48">
+        <div className="grid grid-cols-1">
 
             {
                 error400 && <Alerta400 />

@@ -1,5 +1,4 @@
 import {connectDB} from '@/utils/db'
-import Incidence from '@/models/Incidence' 
 import User from '@/models/User' 
 import { NextResponse } from 'next/server'
 

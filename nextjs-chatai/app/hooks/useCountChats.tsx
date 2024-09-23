@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { Usuario } from "@/types/User"
 
-export const useChats = () => {
+export const useCountChats = () => {
 
     const router = useRouter()
     const [loading, setisLoading] = useState(true)

@@ -22,8 +22,8 @@ export default function Chat({ chat }: any) {
 
             if (res.status === 200) {
                 
-                router.push('/chat')
                 router.refresh()
+                router.push('/chat')
             }
         }
     }

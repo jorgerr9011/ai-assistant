@@ -25,7 +25,10 @@ export const useGetChat = ({ params } : { params: any }) => {
                     ['_id']: chat._id,
                     ['title']: chat.title,
                     ['chat_history']: chat.chat_history,
-                    ['user']: chat.user
+                    ['user']: chat.user,
+                    ['createdAt']: chat.createdAt,
+                    ['updatedAt']: chat.updatedAt,
+                    ['__v']: chat.__v
                 })
 
                 setIsLoading(false)

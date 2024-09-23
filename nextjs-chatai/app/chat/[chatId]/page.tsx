@@ -3,15 +3,21 @@
 import { Message, useChat } from 'ai/react';
 import { useEffect, useState } from 'react';
 import { useUser } from '../../hooks/useUser';
-import { useGetChat } from '../../hooks/useGetChat';
+//import { useGetChat } from '../../hooks/useGetChat';
 import { useParams } from 'next/navigation';
+import type { Chat } from '@/types/Chat'
+
 
 export default function Chat() {
 
     const params = useParams()
     const { usuario, isLoading } = useUser()
     const [loading, setIsLoading] = useState(false)
-    const { chat, isloading } = useGetChat({ params })
+    //const { chat, isloading } = useGetChat({ params })
+
+    const [isloading, setisloading] = useState(false)
+
+    const [conversation, setChat] = useState<Chat>()
 
     const response = () => {
         setIsLoading(true)
@@ -42,13 +48,13 @@ export default function Chat() {
 
     const { setMessages, messages, input, handleInputChange, handleSubmit } = useChat({
         onResponse: response, onFinish: finish, api: `http://localhost:3000/api/chat/${params.chatId}`, body: {
-            chat: chat
+            chat: conversation
         },
     });
 
     const handleDelete = async () => {
 
-        let deleteConversation = chat
+        let deleteConversation = conversation
         if (deleteConversation) {
             deleteConversation.chat_history = []
         }
@@ -67,12 +73,46 @@ export default function Chat() {
 
     useEffect(() => {
 
-        if (!isloading && chat != undefined && !isLoading) {
+        const getData = async () => {
 
-            setMessages(chat?.chat_history as Message[])
+            try {
+                const res = await fetch(`http://localhost:3000/api/chat/${params.chatId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                const chat = await res.json();
+                setChat({
+                    ['_id']: chat._id,
+                    ['title']: chat.title,
+                    ['chat_history']: chat.chat_history,
+                    ['user']: chat.user,
+                    ['createdAt']: chat.createdAt,
+                    ['updatedAt']: chat.updatedAt,
+                    ['__v']: chat.__v
+                })
+
+                setisloading(false)
+
+            } catch (error: any) {
+
+                console.log(error.message)
+            }
+        };
+        getData()
+
+    }, [])
+
+    useEffect(() => {
+
+        if (!isloading && conversation != undefined && !isLoading) {
+
+            setMessages(conversation?.chat_history as Message[])
         }
 
-    }, [isLoading, chat?.chat_history])
+    }, [isloading, conversation?.chat_history])
 
     return (
 

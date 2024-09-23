@@ -43,36 +43,59 @@ export async function POST(req: Request) {
     const message = messages[messages.length - 1]
     const chat = body.chat
 
+    //console.log(formattedPreviousMessages)
+    //console.log(typeof formattedPreviousMessages)
+
     addChatMessages(message, chat)
 
-    const chain = new RemoteRunnable({
-      url: 'http://localhost:8000/chat',
-      options: {
-        timeout: 1000000000
+    const response = await fetch('http://localhost:8000/solution/', {
+      method: 'POST',
+      body: JSON.stringify(
+        {
+          "query": message.content,
+          "chat_history": formattedPreviousMessages.join('\n')
+        }),
+      headers: {
+        "Content-Type": "application/json"
       }
     })
 
-    const result = await chain.stream({
+    const solution = await response.json()
+
+    // const chain = new RemoteRunnable({
+    //   url: 'http://localhost:8000/chat',
+    //   options: {
+    //     timeout: 1000000000
+    //   }
+    // })
+
+    /*const result = await chain.stream({
       chat_history: formattedPreviousMessages.join('\n'),
       input: currentMessageContent,
-    })
+    })*/
 
-    const decoder = new TextDecoder()
-    const encoder = new TextEncoder()
+    // const result = await chain.stream({
+    //   input: currentMessageContent
+    // })
 
-    let first_entry_skipped = false
+    // console.log(result)
 
-    const transformStream = new TransformStream({
-      transform(chunk, controller) {
-        if (!first_entry_skipped) {
-          first_entry_skipped = true
-        } else {
-          controller.enqueue(chunk.toString())
-        }
-      }
-    })
+    // const decoder = new TextDecoder()
+    // const encoder = new TextEncoder()
 
-    return new StreamingTextResponse(result.pipeThrough(transformStream))
+    // let first_entry_skipped = false
+
+    // const transformStream = new TransformStream({
+    //   transform(chunk, controller) {
+    //     if (!first_entry_skipped) {
+    //       first_entry_skipped = true
+    //     } else {
+    //       controller.enqueue(chunk.toString())
+    //     }
+    //   }
+    // })
+
+    return new StreamingTextResponse(solution)
 
   } catch (error: any) {
     console.log("Hubo un error en la petición")

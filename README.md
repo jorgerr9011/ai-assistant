@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## AI Assistant
+Este proyecto tiene como objetivo desarrollar una aplicación web que implemente un asistente
+para que usuarios de una organización puedan resolver incidencias de manera automatizada, sin
+la necesidad de que un técnico tenga que resolverlas. 
 
-## Getting Started
+Para lograr cumplir con ese objetivo, se ha utilizado la técnica RAG para integrar el LLM 
+(Large Language Model) que resolverá las solicitudes de los usuarios, utilizando como base de
+conocimiento información interna de la organización.
 
-First, run the development server:
+El sistema incluye autenticación, implementada usando NextAuth, que es una biblioteca de
+autenticación para aplicaciones NextJs. Nextauth permite la implementación de múltiples proveedores (servicios que pueden ser
+usados para iniciar sesión con un usuario) como Google o GitHub, aunque en el proyecto
+se utilizará el proveedor Credentials, que permite iniciar sesión con credenciales arbitrarias
+(correo y contraseña), y nos permitirá autorizar los usuarios previamente registrados en nuestra
+base de datos. Para almacenar la contraseña en el backend se usó la librería bcrypt, que
+nos permitirá cifrarla antes de ser guardada en la base de datos. Para configurar la sesión se 
+escogió la estrategia JWT (JSON Web Token) para almacenar la información de la sesión, ya que esta
+información solo se almacena del lado del cliente.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![imagen](https://github.com/user-attachments/assets/4d8bc352-52b0-4d91-8521-4a4cc89d783a)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Historias de usuario
+* Crear Chat
+* Borrar Chat
+* Crear solicitud a través del Chat
+* Limpiar historial de mensajes de un Chat
+* Mostrar historial de chats
+* Iniciar sesión
+* Registro
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Tecnologías utilizadas
+* NextJs
+* TypeScript
+* React
+* MongoDB
+* Jest
+* React Testing Library

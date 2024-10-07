@@ -7,6 +7,8 @@ Para lograr cumplir con ese objetivo, se ha utilizado la técnica RAG para integ
 (Large Language Model) que resolverá las solicitudes de los usuarios, utilizando como base de
 conocimiento información interna de la organización.
 
+### Autenticación
+
 El sistema incluye autenticación, implementada usando NextAuth, que es una biblioteca de
 autenticación para aplicaciones NextJs. Nextauth permite la implementación de múltiples proveedores (servicios que pueden ser
 usados para iniciar sesión con un usuario) como Google o GitHub, aunque en el proyecto

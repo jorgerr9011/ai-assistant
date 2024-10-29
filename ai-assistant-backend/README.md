@@ -1,3 +1,16 @@
+# PARA INSTALAR LAS DEPENDENCIAS DEL ENTORNO VIRTUAL
+```bash
+python -m venv venv
+
+source venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+# EN CASO DE QUE SE AÑADAN NUEVAS DEPENDENCIAS, ACTUALIZAR FICHERO REQUIREMENTS.TXT
+```bash
+pip freeze > requirements.txt
+
 # chat_server
 
 ## Installation

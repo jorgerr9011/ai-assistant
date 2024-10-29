@@ -32,6 +32,8 @@ información solo se almacena del lado del cliente.
 * Iniciar sesión
 * Registro
 
+## RAG como técnica para la recuperación de información y alimentación del modelo
+
 ## Tecnologías utilizadas en el Frontend
 
 ![Next.js](https://img.shields.io/badge/next.js-%23000000.svg?style=for-the-badge&logo=nextdotjs&logoColor=white)

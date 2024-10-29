@@ -1,7 +1,9 @@
 ## AI Assistant
-Este proyecto tiene como objetivo desarrollar una aplicación web que implemente un asistente
-para que usuarios de una organización puedan resolver incidencias de manera automatizada, sin
-la necesidad de que un técnico tenga que resolverlas. 
+
+Como objetivo de superar el Trabajo de Fin de Grado de Ingeniería Informática en la Coruña, se
+propuso la realización del siguiente trabajo. Este proyecto tiene como objetivo desarrollar una 
+aplicación web que implemente un asistente para que usuarios de una organización puedan 
+resolver incidencias de manera automatizada, sin la necesidad de que un técnico tenga que resolverlas. 
 
 Para lograr cumplir con ese objetivo, se ha utilizado la técnica RAG para integrar el LLM 
 (Large Language Model) que resolverá las solicitudes de los usuarios, utilizando como base de
@@ -19,8 +21,7 @@ nos permitirá cifrarla antes de ser guardada en la base de datos. Para configur
 escogió la estrategia JWT (JSON Web Token) para almacenar la información de la sesión, ya que esta
 información solo se almacena del lado del cliente.
 
-![imagen](https://github.com/user-attachments/assets/4d8bc352-52b0-4d91-8521-4a4cc89d783a)
-
+![Captura desde 2024-10-07 23-12-31](https://github.com/user-attachments/assets/c8cf9995-d7dd-449c-9a16-4a6db097e185)
 
 ## Historias de usuario
 * Crear Chat

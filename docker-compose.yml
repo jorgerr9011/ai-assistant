@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  langchain-server:
+    build:
+      context: ./ai-assistant-backend
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./ai-assistant-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./ai-assistant-frontend:/app # Monta tu código fuente en el contenedor
+      - /app/node_modules # Evita sobrescribir node_modules
+    depends_on:
+      - langchain-server
+      - mongodb
+    #command:
+     # - npm run dev
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017/incidenceMongo
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

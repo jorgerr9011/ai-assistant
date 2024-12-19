@@ -50,3 +50,9 @@ información solo se almacena del lado del cliente.
 ![openai](https://img.shields.io/badge/openai-%23412991.svg?style=for-the-badge&logo=openai&logoColor=white)
 ![confluence](https://img.shields.io/badge/confluence-%23172B4D.svg?style=for-the-badge&logo=confluence&logoColor=white)
 ![mongodb](https://img.shields.io/badge/mongodb-%2347A248.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+
+
+# Instalación
+
+    docker-compose up --build
+

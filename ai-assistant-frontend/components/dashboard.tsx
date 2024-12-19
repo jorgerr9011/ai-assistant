@@ -262,7 +262,7 @@ export default function Dashboard() {
                         </>
                     )}
 
-                    <div className="col-span-2 mr-12 rounded gap-4 max-h-max h-screen opacity-75 bg-blue-200">
+                    <div className="col-span-2 mr-12 rounded gap-4 min-h-screen mb-8 opacity-75 bg-blue-200">
 
                         <div className="flex flex-col my-24 h-32 gap-12">
                             <div className="flex flex-1 pl-6 justify-start sm:justify-start h-16">

@@ -1,16 +1,14 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-from langserve import add_routes
+from .rag import rag
+#from langserve import add_routes
 from .qa_model import QaLlm
 #from .incidence_model import Llm
-from .qa_history import LlmChatHistory
+#from .qa_history import LlmChatHistory
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import List
-
-from .rag import get_retriever, format_docs
-
+#from typing import List
 
 app = FastAPI(
     title="Server chat",
@@ -23,7 +21,7 @@ class Item(BaseModel):
     chat_history: str
     #chat_history: List[str]
 
-retriever = get_retriever()
+retriever = rag.get_retriever()
 
 @app.get("/")
 async def redirect_root_to_docs():

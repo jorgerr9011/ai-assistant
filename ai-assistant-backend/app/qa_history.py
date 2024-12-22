@@ -1,15 +1,15 @@
 from langchain_community.llms import Ollama
-from langchain_community.embeddings import OllamaEmbeddings
+#from langchain_community.embeddings import OllamaEmbeddings
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
+#from langchain_core.runnables import RunnablePassthrough
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from .rag import get_retriever, format_docs
 from dotenv import load_dotenv
 import os
 
-from langchain.chains import create_retrieval_chain
-from langchain.chains.combine_documents import create_stuff_documents_chain
+#from langchain.chains import create_retrieval_chain
+#from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 
 class LlmChatHistory:

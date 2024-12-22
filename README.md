@@ -54,5 +54,5 @@ información solo se almacena del lado del cliente.
 
 # Instalación
 
-    docker-compose up --build
+    docker-compose -p ai-assistant-app up --build
 

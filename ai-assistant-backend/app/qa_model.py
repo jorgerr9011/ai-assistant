@@ -1,28 +1,28 @@
-from langchain_community.llms import Ollama
+#from langchain_community.llms import Ollama
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
-from langchain_core.runnables import RunnablePassthrough
-from langchain_community.llms import Ollama
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
+#from langchain_core.runnables import RunnablePassthrough
+#from langchain_community.llms import Ollama
+#from langchain_core.runnables import RunnablePassthrough
+#from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from .rag import get_retriever, format_docs
+#from .rag import get_retriever, format_docs
 
-from langchain.prompts.chat import ChatPromptTemplate
-from langchain.schema import HumanMessage, SystemMessage
+#from langchain.prompts.chat import ChatPromptTemplate
+#from langchain.schema import HumanMessage, SystemMessage
 
-from langchain_community.document_loaders.json_loader import JSONLoader
-from langchain_text_splitters import CharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
-from data import get_pages_data_and_save_to_file
-from langchain_chroma import Chroma
-from langchain_core.messages import SystemMessage
-from langchain_core.prompts import HumanMessagePromptTemplate
+#from langchain_community.document_loaders.json_loader import JSONLoader
+#from langchain_text_splitters import CharacterTextSplitter
+#from langchain_openai import OpenAIEmbeddings
+#from data import get_pages_data_and_save_to_file
+#from langchain_chroma import Chroma
+#from langchain_core.messages import SystemMessage
+#from langchain_core.prompts import HumanMessagePromptTemplate
 
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from langchain.chains import LLMChain
+#from langchain.chains import LLMChain
 
 class QaLlm: 
 

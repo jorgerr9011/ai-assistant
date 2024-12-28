@@ -4,8 +4,8 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { Usuario } from "@/types/User";
-import { DarkThemeIcon } from "./icons/themes/DarkThemeIcon";
-import { LightThemeIcon } from "./icons/themes/LightThemeIcon";
+import { DarkThemeIcon } from "../icons/themes/DarkThemeIcon";
+import { LightThemeIcon } from "../icons/themes/LightThemeIcon";
 
 export default function Header() {
   const { data: session, status } = useSession();

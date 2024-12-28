@@ -10,11 +10,11 @@ import { Usuario } from "@/types/User";
 import ConfirmDialog from "@/components/confirm";
 import { DesplegableIcon } from "@/components/icons/DesplegableIcon";
 import { ChatsIcon } from "@/components/icons/chats/ChatsIcon";
-import { CreateChatIcon } from "./icons/chats/CreateChatIcon";
-import { PreviousPageIcon } from "./icons/chats/PreviousPageIcon";
-import { NextPageIcon } from "./icons/chats/NextPageIcon";
-import { EditChatIcon } from "./icons/chats/EditChatIcon";
-import { DeleteChatIcon } from "./icons/chats/DeleteChatIcon";
+import { CreateChatIcon } from "../icons/chats/CreateChatIcon";
+import { PreviousPageIcon } from "../icons/chats/PreviousPageIcon";
+import { NextPageIcon } from "../icons/chats/NextPageIcon";
+import { EditChatIcon } from "../icons/chats/EditChatIcon";
+import { DeleteChatIcon } from "../icons/chats/DeleteChatIcon";
 
 export default function Dashboard() {
   const { data: session, status } = useSession({
@@ -193,6 +193,7 @@ export default function Dashboard() {
   };
 
   const handleDesplegable = () => {
+    setIsOpen(false)
     setDesplegable(desplegable === "70%" ? "25%" : "70%");
   };
 

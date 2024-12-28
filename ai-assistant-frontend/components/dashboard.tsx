@@ -299,7 +299,7 @@ export default function Dashboard() {
                 >
                   <p className="flex justify-center">
                     <CreateChatIcon />
-                    {desplegable === "70%" ? <>Crear chat</> : <></>}
+                    {desplegable === "70%" ? <p className="ml-2">Crear chat</p> : <></>}
                   </p>
                 </button>
               </div>
@@ -312,7 +312,7 @@ export default function Dashboard() {
                   >
                     <p className="flex justify-center">
                       <ChatsIcon />
-                      {desplegable === "70%" ? <>Mis chats</> : <></>}
+                      {desplegable === "70%" ? <p className="ml-2">Mis chats</p> : <></>}
                     </p>
                   </button>
                 </div>

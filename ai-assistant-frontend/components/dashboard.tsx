@@ -46,6 +46,8 @@ export default function Dashboard() {
 
   const [showEdit, setShowEdit] = useState(false);
 
+  const [desplegable, setDesplegable] = useState<string>("70%");
+
   const nextPage = () => {
     if (chats.length > currentPage + 5) {
       setCurrentPage(currentPage + 5);
@@ -183,6 +185,10 @@ export default function Dashboard() {
     }
   };
 
+  const handleDesplegable = () => {
+    setDesplegable(desplegable === "70%" ? "25%" : "70%");
+  };
+
   useEffect(() => {
     async function getData(usuarioId: String) {
       const res = await fetch(`/api/chat?user=${usuarioId}`, {
@@ -263,45 +269,91 @@ export default function Dashboard() {
             <></>
           )}
 
-          <div className="col-span-2 mr-12 rounded gap-4 min-h-screen mb-8 opacity-75 bg-blue-200">
-            <div className="flex flex-col my-24 h-32 gap-12">
-              <div className="flex flex-1 pl-6 justify-start sm:justify-start h-16">
-                <Link
-                  href="/chat/#"
-                  onClick={handleModalNew}
-                  className="text-black font-semibold p-3 rounded-lg hover:bg-pink-400"
+          <div
+            className="container sm:col-span-0 md:col-span-2 md:w-8/12 w-0 mr-12 rounded gap-4 mb-8 opacity-75 bg-blue-200"
+            style={{ width: desplegable, height: "85vh" }}
+          >
+            <div className="flex justify-start w-12 transition ml-6 mt-10 mr-2 hover:scale-110">
+              <button
+                onClick={handleDesplegable}
+                className="rounded-full p-3 h-12 hover:bg-pink-400"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6"
                 >
-                  Crear chat
-                </Link>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              className="flex flex-col my-6 mr-2 h-16 gap-8"
+              style={{ width: desplegable }}
+            >
+              <div className="flex pl-6 justify-start sm:justify-start h-16">
+                <button
+                  onClick={handleModalNew}
+                  className="text-black font-semibold p-3 hidden md:block rounded-lg hover:bg-pink-400"
+                >
+                  <p className="flex justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="size-6 mr-2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
+                      />
+                    </svg>
+                    {desplegable === "70%" ? <>Crear chat</> : <></>}
+                  </p>
+                </button>
               </div>
 
-              <div className="relative flex flex-1 justify-start pl-6 sm:justify-start align-center h-12">
-                <button
-                  onClick={() => setIsOpen(!isOpen)}
-                  className="text-black font-semibold p-3 rounded-lg hover:bg-pink-400 flex items-center"
-                >
-                  Mis chats
-                  <svg
-                    className="h-5 w-5 text-black"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                    aria-hidden="true"
+              <div className="flex flex-1 flex-col pl-6 justify-start sm:justify-start h-16">
+                <div>
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="text-black font-semibold p-3 md:block hidden rounded-lg hover:bg-pink-400"
                   >
-                    <path d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" />
-                  </svg>
-                </button>
+                    <p className="flex justify-center">
+                      <svg
+                        className="mr-2 h-5 text-black"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" />
+                      </svg>
+                      {desplegable === "70%" ? <>Mis chats</> : <></>}
+                    </p>
+                  </button>
+                </div>
                 {isOpen && (
-                  <div className="absolute flex flex-col mx-auto ml-4 justify-center sm:justify-center align-center mt-16">
+                  <div className="flex flex-col mx-auto ml-2 justify-center sm:justify-center align-center mt-4">
                     <div className="flex flex-col gap-4">
                       {chats.length > 0 &&
-                        filteredChats().map((item: Chat, index) => (
+                        filteredChats().map((item: Chat) => (
                           <li
                             className="flex items-center gap-2"
                             key={item._id as unknown as Key}
                           >
                             <Link
                               href={`/chat/${item._id}`}
-                              className="p-3 text-black font-semibold rounded-lg hover:bg-blue-400"
+                              className="p-3 hidden md:block text-black font-semibold rounded-lg hover:bg-blue-400"
                             >
                               {" "}
                               {item.title}{" "}
@@ -311,6 +363,7 @@ export default function Dashboard() {
                               onClick={() =>
                                 handleModalDel(item._id as unknown as String)
                               }
+                              className="hidden md:block rounded-xl hover:bg-blue-500"
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -327,7 +380,7 @@ export default function Dashboard() {
                                 />
                               </svg>
                             </Link>
-                            <Link href="/chat/#">
+                            <button className="hidden md:block rounded-xl hover:bg-blue-500">
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 onClick={() =>
@@ -345,24 +398,53 @@ export default function Dashboard() {
                                   d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
                                 />
                               </svg>
-                            </Link>
+                            </button>
                           </li>
                         ))}
                     </div>
 
-                    <div className="flex flex-row gap-2 mt-2">
+                    <div className="flex flex-row mt-2">
                       <button
                         onClick={previousPage}
-                        className="button button-primary rounded-xl m-4 bg-slate-500"
+                        className="button button-primary md:block hidden rounded-xl m-4 hover:bg-blue-500"
                       >
-                        Anterior
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          className="size-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5"
+                          />
+                        </svg>
                       </button>
-                      <label className="mt-4"> {currentPage / 5} </label>
+                      <label className="mt-4 md:block hidden">
+                        {" "}
+                        {currentPage / 5}{" "}
+                      </label>
                       <button
                         onClick={nextPage}
-                        className="button button-primary rounded-xl m-4 bg-slate-500"
+                        className="button button-primary md:block hidden rounded-xl m-4 hover:bg-blue-500"
                       >
-                        Siguiente
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          className="size-6"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5"
+                          />
+                        </svg>
                       </button>
                     </div>
                   </div>

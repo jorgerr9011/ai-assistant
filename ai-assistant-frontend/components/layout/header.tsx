@@ -25,7 +25,7 @@ export default function Header() {
   return (
     <>
       <div className={theme}></div>
-      <nav className="flex opacity-75 rounded max-h-12 py-10 items-center justify-between bg-blue-200 bg-blend-overlay p-1">
+      <nav className="flex opacity-75 rounded max-h-12 w-auto py-10 items-center justify-between bg-blue-200 bg-blend-overlay p-1">
         <a href="/" className="px-8">
           <img className="w-32 h-32" src="/simbolo_udc.svg" alt="udc" />
         </a>

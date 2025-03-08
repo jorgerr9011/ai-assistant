@@ -278,13 +278,13 @@ export default function Dashboard() {
           )}
 
           <div
-            className="container sm:col-span-0 md:col-span-2 md:w-8/12 w-0 mr-12 rounded gap-4 mb-8 opacity-75 bg-blue-200"
+            className="container sm:col-span-0 md:col-span-2 md:w-8/12 sm:w-1/4 mr-12 rounded gap-4 mb-8 opacity-75 bg-blue-200"
             style={{ width: desplegable, height: "85vh" }}
           >
             <div className="flex justify-start w-12 transition ml-6 mt-10 mr-2 hover:scale-110">
               <button
                 onClick={handleDesplegable}
-                className="rounded-full p-3 h-12 hover:bg-pink-400"
+                className="rounded-full p-3 h-12 hidden md:block hover:bg-pink-400"
               >
                 <DesplegableIcon />
               </button>
